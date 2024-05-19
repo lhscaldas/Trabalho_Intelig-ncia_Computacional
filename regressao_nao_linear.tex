@@ -1,0 +1,16 @@
+\section{Regressão Não-Linear}
+
+Nestes problemas, nós vamos novamente aplicar Regressão Linear para classificação. Considere a função target
+
+$$f(x_1,x_2) = sign(x_1^2 + x_2^2 - 0.6) $$
+
+Gere um conjunto de treinamento de $N = 1000$ pontos em $\mathcal{X} = [-1, 1] \times [-1, 1]$ com probabilidade uniforme escolhendo cada $x \in \mathcal{X}$. Gere um ruído simulado selecionando aleatoriamente 10\% do conjunto de treinamento e invertendo o rótulo dos pontos selecionados.
+
+\begin{enumerate}
+    \item Execute a Regressão Linear sem nenhuma transformação, usando o vetor de atributos $(1, x_1, x_2)$ para encontrar o peso $w$. Qual é o valor aproximado de classificação do erro médio dentro da amostra $E_{in}$ (medido ao longo de 1000 execuções)?
+    
+    \item gora, transforme os $N = 1000$ dados de treinamento seguindo o vetor de atributos não-linear $(1, x_1, x_2, x_1x_2, x_1^2, x_2^2)$. Encontre o vetor $\tilde{w}$ que corresponda à solução da Regressão Linear. Quais das hipóteses a seguir é a mais próxima à que você encontrou? Avalie o resultado médio obtido após 1000 execuções.
+    
+    \item Qual o valor mais próximo do erro de classificação fora da amostra $E_{out}$ de sua hipótese na questão anterior? (Estime-o gerando um novo conjunto de 1000 pontos e usando 1000 execuções diferentes, como antes).
+\end{enumerate}
+

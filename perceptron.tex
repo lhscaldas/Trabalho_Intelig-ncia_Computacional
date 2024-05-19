@@ -1,0 +1,30 @@
+\section{Perceptron}
+
+Neste problema, você criará a sua própria função target $f$ e uma base de dados $D$ para que possa ver como o
+Algoritmo de Aprendizagem Perceptron funciona. Escolha $d = 2$ pra que você possa visualizar o problema,
+e assuma $\chi = [-1, 1] \times [-1, 1]$ com probabilidade uniforme de escolher cada $x \in \mathcal{X}$ .
+
+Em cada execução, escolha uma reta aleatória no plano como sua função target $f$ (faça isso selecionando dois pontos aleatórios, uniformemente distribuídos em  $\chi = [-1, 1] \times [-1, 1]$, e pegando a reta que passa entre eles), de modo que um lado da reta mapeia pra +1 e o outro pra -1. Escolha os inputs xn da base de dados como um conjunto de pontos aleatórios (uniformemente em $ \mathcal{X}$ ), e avalie a função target em cada $x_n$ para pegar o output correspondente $y_n$.
+
+Agora, pra cada execução, use o Algoritmo de Aprendizagem Perceptron (PLA) para encontrar $g$. Inicie o PLA com um vetor de pesos $w$ zerado (considere que $sign(0) = 0$, de modo que todos os pontos estejam classificados erroneamente ao início), e a cada iteração faça com que o algoritmo escolha um ponto aleatório dentre os classificados erroneamente. Estamos interessados em duas quantidades: o número de iterações que o PLA demora para convergir pra $g$, e a divergência entre $f$ e $g$ que é $\mathbb{P}[f (x) \neq g(x)]$ (a probabilidade de que $f$ e $g$ vão divergir na classificação de um ponto aleatório). Você pode calcular essa probabilidade de maneira exata, ou então aproximá-la ao gerar uma quantidade suficientemente grande de novos pontos para estimá-la (por exemplo, 10.000).
+
+A fim de obter uma estimativa confiável para essas duas quantias, você deverá realizar 1000 execuções do experimento (cada execução do jeito descrito acima), tomando a média destas execuções como seu resultado
+final.
+
+Para ilustrar os resultados obtidos nos seus experimentos, acrescente ao seu relatório gráficos scatterplot
+com os pontos utilizados para calcular $E_{out}$, assim como as retas correspondentes à função target e à hipótese $g$ encontrada.
+
+\begin{enumerate}
+    \item Considere $N = 10$. Quantas iterações demora, em média, para que o PLA convirja com $N = 10$
+    pontos de treinamento? Escolha o valor mais próximo do seu resultado.
+    
+    \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 10$?
+    
+    \item Agora considere $N = 100$. Quantas iterações demora, em média, para que o PLA convirja com
+    N = 100 pontos de treinamento? Escolha o valor mais próximo do seu resultado/.
+
+    \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 100$?
+    
+    \item  possível estabelecer alguma regra para a relação entre N , o número de iterações até a convergência,
+    e $\mathbb{P}[f(x) \neq g(x)]$?
+\end{enumerate}

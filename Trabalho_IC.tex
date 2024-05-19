@@ -1,0 +1,74 @@
+\documentclass[12 pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{matlab-prettifier}
+\usepackage[portuguese]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage[font=small,labelfont=bf]{caption}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{comment}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[normalem]{ulem}               % to striketrhourhg text
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\newcommand\redout{\bgroup\markoverwith
+{\textcolor{red}{\rule[0.5ex]{2pt}{0.8pt}}}\ULon}
+\renewcommand{\lstlistingname}{Código}% Listing -> Algorithm
+\renewcommand{\lstlistlistingname}{Lista de \lstlistingname s}% List of Listings -> List of Algorithms
+
+\usepackage[top=3cm,left=2cm,bottom=2cm, right=2cm]{geometry}
+
+\lstset{language=Python,
+    basicstyle={\color{black}\small\ttfamily},   
+    breaklines=true,%
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    %morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{purple},
+    commentstyle=\color{green},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    %emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style}, 
+    extendedchars=true,
+    literate={á}{{\'a}}1 {à}{{\`a}}1 {ã}{{\~a}}1 {é}{{\'e}}1 {É}{{\'E}}1 {ê}{{\^e}}1 {ë}{{\"e}}1 {í}{{\'i}}1 {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {õ}{{\~o}}1 {ó}{{\'o}}1 {ô}{{\^o}}1 {ú}{{\'u}}1 {â}{{\^a}}1 {~}{{$\sim$}}1
+}
+
+
+\title{%
+\textbf{Universidade Federal do Rio de Janeiro} \newline \par
+\textbf{Instituto Alberto Luiz Coimbra de Pós-Graduação e Pesquisa de Engenharia} \par
+\includegraphics[width=8cm]{COPPE UFRJ.png} \par
+\textbf{Programa de Engenharia de Sistemas e Computação} \par
+CPS844 - Inteligência Computacional I \par
+Prof. Dr. Carlos Eduardo Pedreira \par 
+\vspace{1\baselineskip}
+\textit{Trabalho prático}
+}
+
+\author{Luiz Henrique Souza Caldas\\email: lhscaldas@cos.ufrj.br}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\newpage
+
+\include{perceptron}
+\include{regressao_linear}
+\include{regressao_nao_linear}
+
+
+
+\end{document}
