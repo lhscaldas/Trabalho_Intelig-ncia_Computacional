@@ -24,41 +24,20 @@ class Dataset:
         a = self.a
         b = self.b
         y_reta = a*point[0] + b    
-        return np.sign(point[1] - y_reta)
+        return np.sign(point[1] - y_reta) # verifica se a coordenada y do ponto está acima ou abaixo da reta
 
     # Método para gerar a base de dados D
     def generate_dataset(self):
         N = self.N
-        data = np.random.uniform(-1, 1, (N, 2))
+        data = np.random.uniform(-1, 1, (N, 2)) # gera N pontos no R2 com coordenadas entre [-1, 1]
         labels = np.array([self.classify_point(point) for point in data])
         return data, labels
-    
-    def plot_dataset(self, data, labels):
-        plt.figure(figsize=(8, 8))
-        x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
-        y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
-        x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
-        y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
-        plt.scatter(x_pos, y_pos, c='blue', label='+1')
-        plt.scatter(x_neg, y_neg, c='red', label='-1')
-        x = np.linspace(-1, 1, 100)
-        y_target = self.a*x+self.b
-        plt.plot(x, y_target, 'k-', label='Função Target (f)')
-        plt.xlim(-1, 1)
-        plt.ylim(-1, 1)
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.title('Dataset com o Target')
-        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        plt.tight_layout(rect=[0, 0, 1, 1])
-        plt.grid(True)
-        plt.show()
 
 # Classe para criar e treinar o perceptron 2D
 class Perceptron2D:
-    def __init__(self, threshold=0.7, max_iter=10000):
+    def __init__(self, max_iter=1000):
         self.max_iter = max_iter
-        self.w = np.zeros(3)  # Inicializa os pesos (incluindo o w_0)
+        self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
     
     # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
     def fit(self, data, labels): 
@@ -78,11 +57,12 @@ class Perceptron2D:
     # Método para classificar um dataset com base nos pesos aprendidos.
     def classificar(self, data):
         n_samples = len(data)
-        X_bias = np.hstack([np.ones((n_samples, 1)), data]) # Adiciona uma coluna de 1s para o bias X_0
-        return np.sign(np.dot(X_bias, self.w))
+        X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o bias X_0
+        return np.sign(np.dot(X_bias, self.w)) # verifica o sinal do produto escalar entre x e w
     
-    def plot_dataset(self, data, labels, a, b):
-        plt.figure(figsize=(8, 8))
+    # Método para plotar os resultados
+    def plot(self, data, labels, a, b):
+        plt.figure(figsize=(8, 6))
         x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
         y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
         x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
@@ -98,26 +78,38 @@ class Perceptron2D:
         plt.ylim(-1, 1)
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title('Dataset com o Target (f) e a Hipótese (g)')
+        plt.title('Base de dados com o Target (f) e a Hipótese (g)')
         plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.tight_layout(rect=[0, 0, 1, 1])
         plt.grid(True)
         plt.show()
 
+def teste():
+    num_points = 100
+    pontos = Dataset(num_points)
+    a, b = pontos.generate_random_line()
+    data, labels = pontos.generate_dataset()
+    perceptron = Perceptron2D()
+    perceptron.fit(data,labels)
+    perceptron.plot(data, labels, a, b)
+
 def item_1():
     num_points = 10
     num_iter = list()
-    for _ in range(1000):
+    for i in range(1000):
         pontos = Dataset(num_points)
-        pontos.generate_random_line()
+        a, b = pontos.generate_random_line()
         data, labels = pontos.generate_dataset()
         perceptron = Perceptron2D()
         iter, _ = perceptron.fit(data,labels)
         num_iter.append(iter)
+
     print(f"item a) {np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
 
 
+
 if __name__ == "__main__":
+    # teste()
     item_1()
 
 

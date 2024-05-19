@@ -8,10 +8,11 @@
 \usepackage{subcaption}
 \usepackage[font=small,labelfont=bf]{caption}
 \definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{myyellow}{rgb}{1.0, 1.0, 0.8}
 \usepackage{mathtools}
 \usepackage{multirow}
 \usepackage{comment}
-\usepackage{color}
+\usepackage{xcolor}
 \usepackage{colortbl}
 \usepackage[normalem]{ulem}               % to striketrhourhg text
 \usepackage{amsmath}
@@ -23,31 +24,29 @@
 
 \usepackage[top=3cm,left=2cm,bottom=2cm, right=2cm]{geometry}
 
-\lstset{language=Python,
-    basicstyle={\color{black}\small\ttfamily},   
-    breaklines=true,%
-    frame=single,
-    backgroundcolor=\color{gray!10},
-    %morekeywords={matlab2tikz},
-    keywordstyle=\color{blue},%
-    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
-    identifierstyle=\color{black},%
-    stringstyle=\color{purple},
-    commentstyle=\color{green},%
-    showstringspaces=false,%without this there will be a symbol in the places where there is a space
-    numbers=left,%
-    numberstyle={\tiny \color{black}},% size of the numbers
-    numbersep=9pt, % this defines how far the numbers are from the text
-    %emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
-    %emph=[2]{word1,word2}, emphstyle=[2]{style}, 
+% Configuração para destacar a sintaxe do Python
+\lstset{ 
+    language=Python,                     % A linguagem do código
+    backgroundcolor=\color{myyellow}, % A cor do fundo 
+    basicstyle=\ttfamily\footnotesize,   % O estilo do texto básico
+    keywordstyle=\color{blue},           % Cor das palavras-chave
+    stringstyle=\color{red},             % Cor das strings
+    commentstyle=\color{mygreen},          % Cor dos comentários
+    numbers=left,                        % Números das linhas à esquerda
+    numberstyle=\tiny\color{gray},       % Estilo dos números das linhas
+    stepnumber=1,                        % Número de linhas entre os números das linhas
+    frame=single,                        % Moldura ao redor do código
+    breaklines=true,                     % Quebra automática das linhas longas
+    captionpos=t,                        % Posição da legenda
+    showstringspaces=false               % Não mostra espaços em branco nas strings
     extendedchars=true,
     literate={á}{{\'a}}1 {à}{{\`a}}1 {ã}{{\~a}}1 {é}{{\'e}}1 {É}{{\'E}}1 {ê}{{\^e}}1 {ë}{{\"e}}1 {í}{{\'i}}1 {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {õ}{{\~o}}1 {ó}{{\'o}}1 {ô}{{\^o}}1 {ú}{{\'u}}1 {â}{{\^a}}1 {~}{{$\sim$}}1
 }
 
 
 \title{%
-\textbf{Universidade Federal do Rio de Janeiro} \newline \par
-\textbf{Instituto Alberto Luiz Coimbra de Pós-Graduação e Pesquisa de Engenharia} \par
+\textbf{\huge Universidade Federal do Rio de Janeiro} \par
+\textbf{\LARGE Instituto Alberto Luiz Coimbra de Pós-Graduação e Pesquisa de Engenharia} \par
 \includegraphics[width=8cm]{COPPE UFRJ.png} \par
 \textbf{Programa de Engenharia de Sistemas e Computação} \par
 CPS844 - Inteligência Computacional I \par
