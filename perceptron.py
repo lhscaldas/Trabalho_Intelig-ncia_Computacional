@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from time import sleep
 from sklearn.model_selection import train_test_split
 
 # Classe para criar o dataset e a função target
@@ -93,7 +92,7 @@ def teste():
     plt.grid(True)
     plt.show()
 
-def calc_num_iter(num_points):
+def calc_num_iter(num_points, verbose = True):
     num_iter = list()
     for _ in range(1000):
         dataset = Dataset(num_points)
@@ -102,41 +101,30 @@ def calc_num_iter(num_points):
         perceptron = Perceptron2D()
         iter, _ = perceptron.fit(data,labels)
         num_iter.append(iter)
+    if verbose: print(f"{np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
+    return num_iter
 
-    print(f"{np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
-
-def calc_p_erro(num_points, train_size):
+def calc_p_erro(num_points, verbose = True):
     lista_erro = list()
     for _ in range(1000):
-        dataset = Dataset(num_points)
+        dataset = Dataset(num_points+10000) # mais 10mil pontos para teste
         data, labels = dataset.generate_dataset()
         x_train, x_test, y_train, y_test = train_test_split(
-            data, labels, train_size=train_size, stratify = labels)
+            data, labels, train_size=num_points, stratify = labels)
         perceptron = Perceptron2D()
         perceptron.fit(x_train,y_train)
         y_predicted = perceptron.classificar(x_test)
         erro = np.mean(y_test != y_predicted)
         lista_erro.append(erro)
-
-    print(f"P[f(x)\u2260g(x)] = {np.mean(lista_erro):.4f}")
+    if verbose: print(f"P[f(x)\u2260g(x)] = {np.mean(lista_erro):.4f}")
+    return lista_erro
 
 def relationship(num_points_list):
     num_iter_medio = list()
     lista_erro_medio = list()
     for num_points in num_points_list:
-        num_iter = list()
-        lista_erro = list()
-        for _ in range(1000):
-            dataset = Dataset(10000 + num_points)
-            data, labels = dataset.generate_dataset()
-            x_train, x_test, y_train, y_test = train_test_split(
-                data, labels, train_size=num_points, stratify = labels)
-            perceptron = Perceptron2D()
-            iter, _ = perceptron.fit(x_train,y_train)
-            num_iter.append(iter)
-            y_predicted = perceptron.classificar(x_test)
-            erro = np.mean(y_test != y_predicted)
-            lista_erro.append(erro)
+        num_iter = calc_num_iter(num_points, verbose=False)
+        lista_erro = calc_p_erro(num_points, verbose=False)
         num_iter_medio.append(np.mean(num_iter))  
         lista_erro_medio.append(np.mean(lista_erro))
     return num_iter_medio, lista_erro_medio
@@ -155,12 +143,12 @@ def plot_relationship(num_points_list, num_iter_medio, lista_erro_medio):
     plt.show()
 
 
-
 if __name__ == "__main__":
-    teste()
-    calc_num_iter(num_points = 100)
-    calc_p_erro(num_points = 10100, train_size = 100)
-    num_points_list = np.arange(10, 100, 2, dtype=int)
+    # teste()
+    # calc_num_iter(num_points = 100)
+    # calc_p_erro(num_points = 100)
+    # num_points_list = np.arange(10, 100, 50, dtype=int)
+    num_points_list = [10, 20]
     num_iter_medio, lista_erro_medio = relationship(num_points_list)
     plot_relationship(num_points_list, num_iter_medio, lista_erro_medio)
 
