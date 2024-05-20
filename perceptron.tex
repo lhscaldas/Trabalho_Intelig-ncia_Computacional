@@ -54,7 +54,7 @@ Para responder os itens referentes a este problema, foi implementado em Python u
 \begin{lstlisting}[language=Python, caption=Perceptron, label=cod:perceptron]
     # Classe para criar e treinar o perceptron 2D
     class Perceptron2D:
-        def __init__(self, max_iter=1000):
+        def __init__(self, max_iter=10000):
             self.max_iter = max_iter
             self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
         
@@ -78,30 +78,6 @@ Para responder os itens referentes a este problema, foi implementado em Python u
             n_samples = len(data)
             X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o bias X_0
             return np.sign(np.dot(X_bias, self.w)) # verifica o sinal do produto escalar entre x e w
-        
-            # Método para plotar os resultados
-        def plot(self, data, labels, a, b):
-            plt.figure(figsize=(8, 6))
-            x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
-            y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
-            x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
-            y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
-            plt.scatter(x_pos, y_pos, c='blue', label='+1')
-            plt.scatter(x_neg, y_neg, c='red', label='-1')
-            x = np.linspace(-1, 1, 100)
-            y_target = a*x+b
-            y_g = -(self.w[1] * x + self.w[0]) / self.w[2]
-            plt.plot(x, y_g, 'g-', label='Hipótese (g)')
-            plt.plot(x, y_target, 'k-', label='Função Target (f)')
-            plt.xlim(-1, 1)
-            plt.ylim(-1, 1)
-            plt.xlabel('x')
-            plt.ylabel('y')
-            plt.title('Base de dados com o Target (f) e a Hipótese (g)')
-            plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-            plt.tight_layout(rect=[0, 0, 1, 1])
-            plt.grid(True)
-            plt.show()
 \end{lstlisting}
 
 
@@ -109,19 +85,42 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
 
 \begin{lstlisting}[language=Python, caption=Teste das classes, label=cod:perceptron_teste]
     def teste():
+        # Criar o dataset e a função targe
         num_points = 100
-        pontos = Dataset(num_points)
-        a, b = pontos.generate_random_line()
-        data, labels = pontos.generate_dataset()
+        dataset = Dataset(num_points)
+        a, b = dataset.generate_random_line()
+        data, labels = dataset.generate_dataset()
+        # Criar e treinar o perceptron
         perceptron = Perceptron2D()
-        perceptron.fit(data,labels)
-        perceptron.plot(data, labels, a, b)
+        _, w = perceptron.fit(data,labels)
+        # Plotar resultados
+        plt.figure(figsize=(8, 6))
+        x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
+        y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
+        x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
+        y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
+        plt.scatter(x_pos, y_pos, c='blue', label='+1')
+        plt.scatter(x_neg, y_neg, c='red', label='-1')
+        x = np.linspace(-1, 1, 100)
+        y_target = a*x+b
+        y_g = -(w[1] * x + w[0]) / w[2]
+        plt.plot(x, y_g, 'g-', label='Hipótese (g)')
+        plt.plot(x, y_target, 'k-', label='Função Target (f)')
+        plt.xlim(-1, 1)
+        plt.ylim(-1, 1)
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.title('Base de dados com o Target (f) e a Hipótese (g)')
+        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.tight_layout(rect=[0, 0, 1, 1])
+        plt.grid(True)
+        plt.show()
 \end{lstlisting}
 
 \begin{figure}[H]
     \caption{Base de dados com o Target $(f)$ e a Hipótese $(g)$}
        \centering
-       \includegraphics[height=8cm]{perceptron_plot.png}
+       \includegraphics[width=\textwidth]{perceptron_plot.png}
     \label{fig:perceptron_plot}
 \end{figure}
 
@@ -145,30 +144,28 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
 
     Para responder a esse item foi implementada a seguinte função:
 
-    \begin{lstlisting}[language=Python, caption=Item 1, label=cod:]
-        def item_1():
-        num_points = 10
-        num_iter = list()
-        for i in range(1000):
-            pontos = Dataset(num_points)
-            a, b = pontos.generate_random_line()
-            data, labels = pontos.generate_dataset()
-            perceptron = Perceptron2D()
-            iter, _ = perceptron.fit(data,labels)
-            num_iter.append(iter)
-    
-        print(f"item a) {np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})"
-    
+    \begin{lstlisting}[language=Python, caption=Cálculo do número de iterações, label=cod:perceptron_num_iter]
+        def calc_num_iter(num_points):
+            num_iter = list()
+            for _ in range(1000):
+                dataset = Dataset(num_points)
+                dataset.generate_random_line()
+                data, labels = dataset.generate_dataset()
+                perceptron = Perceptron2D()
+                iter, _ = perceptron.fit(data,labels)
+                num_iter.append(iter)
+        
+            print(f"{np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
     \end{lstlisting}
 
-    O resultado após 1000 execuções do experimento foi uma média de $5,049(\approx 5)$ iterações, com desvio padrão de $7,777 (\approx 8)$ iterações, mínimo de 2 iterações e máximo de 99 iterações. Como 5 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
+    O resultado após 1000 execuções do experimento, com a variável $num\_points = 10$, foi uma média de $5.0490(\approx 5)$ iterações, com desvio padrão de $7.7770(\approx 8)$ iterações, mínimo de 2 iterações e máximo de 99 iterações. Nota-se que o número de iterações pode variar bastante entre uma iteração e outra. Como 5 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
     
     \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 10$?
     
     \begin{enumerate}
         \item 0.001
         \item 0.01
-        \item 0.1
+        \item[\textcolor{red}{(c)}]\textcolor{red}{0.1}\addtocounter{enumii}{1}
         \item 0.5
         \item 1
     \end{enumerate}
@@ -177,15 +174,124 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
 
     \textbf{Justificativa:}
      
-    $\mathbb{P}[f(x) \neq g(x)]$ pode ser calculada analiticamente (ou pelo menos limitada superirmente) pela Desigualdade de Vapnik-Chervonenkis, apresentada na sexta aula do professor Yaser Abu-Mostafa.
+    $\mathbb{P}[f(x) \neq g(x)]$ pode ser estimada computacionalmente gerando-se uma quiantidade suficientemente grande de pontos novos e calculando o percentual de erro na classificação desses pontos. Para responder esse item foram realizadas 1000 execuções, nas quais foram gerados 10010 pontos, sendo 10 utilizados para o treinamento do perceptron e 10 mil utilizados para teste. A cada execução foi calculado o perceltual de erro, isto é, a quantidade de vezes que a classificação do perceptron foi diferente da função target divido pela quantidade de pontos. No final das execuções, $\mathbb{P}[f(x) \neq g(x)]$ foi estimada fazendo a média do percentual de erro em cada execução. A Implementação pode ser vista abaixo:
 
-    
+    \begin{lstlisting}[language=Python, caption=Cálculo da probabilidade de erro, label=cod:perceptron_p_erro]
+        def calc_p_erro(num_points, train_size):
+            lista_erro = list()
+            for _ in range(1000):
+                dataset = Dataset(num_points)
+                data, labels = dataset.generate_dataset()
+                x_train, x_test, y_train, y_test = train_test_split(
+                    data, labels, train_size=train_size, stratify = labels)
+                perceptron = Perceptron2D()
+                perceptron.fit(x_train,y_train)
+                y_predicted = perceptron.classificar(x_test)
+                erro = np.mean(y_test != y_predicted)
+                lista_erro.append(erro)
+        
+            print(f"P[f(x)\u2260g(x)] = {np.mean(lista_erro):.4f}")
+    \end{lstlisting}
+
+    O resultado após 1000 execuções, com $num\_points = 10010$ e $train\_size = 10$, foi  $\mathbb{P}[f(x) \neq g(x)] = 0.0671 = 6.71\%$. Como 0.0671 está mais próximo de 0.1 do que de 0.01, o \textcolor{red}{\textbf{item c}} foi selecionado. 
 
     \item Agora considere $N = 100$. Quantas iterações demora, em média, para que o PLA convirja com
-    N = 100 pontos de treinamento? Escolha o valor mais próximo do seu resultado/.
+    N = 100 pontos de treinamento? Escolha o valor mais próximo do seu resultado.
+
+    \begin{enumerate}
+        \item[\textcolor{red}{(a)}]\textcolor{red}{50}\addtocounter{enumii}{1}
+        \item 100
+        \item 500
+        \item 1000
+        \item 5000
+    \end{enumerate}
+     
+    \par
+
+    \textbf{Justificativa:}
+
+    Para responder a este item foi utilizada a mesma função do item 1 (código \ref{cod:perceptron_num_iter}), com $num\_points = 100$. 
+    
+    O resultado após 1000 execuções do experimento foi uma média de $32.981 (\approx 33)$ iterações, com desvio padrão de $164.5924 (\approx 165)$ iterações, mínimo de 2 iterações e máximo de41 49 iterações. Nota-se que novamente o número de iterações pode variar bastante entre uma iteração e outra. Como 33 está abaixo de 50 e não existe alternativa menor, o \textcolor{red}{\textbf{item a}} foi selecionado. 
+     
 
     \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 100$?
     
-    \item  possível estabelecer alguma regra para a relação entre N , o número de iterações até a convergência,
+    \begin{enumerate}
+        \item 0.001
+        \item[\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+        \item 0.1
+        \item 0.5
+        \item 1
+    \end{enumerate}
+
+    \par
+
+    \textbf{Justificativa:}
+
+    Para responder a este item foi utilizada a mesma função do item 2 (código \ref{cod:perceptron_p_erro}), com $num\_points = 10100$ e $train\_size = 100$.
+
+    O resultado após 1000 execuções foi  $\mathbb{P}[f(x) \neq g(x)] = 0.0069 = 0.69\%$. Como 0.0069 está mais próximo de 0.01 do que de 0.001, o \textcolor{red}{\textbf{item b}} foi selecionado. 
+     
+    
+    \item  É possível estabelecer alguma regra para a relação entre $N$, o número de iterações até a convergência,
     e $\mathbb{P}[f(x) \neq g(x)]$?
+
+    \par
+
+    \textbf{Resposta:}
+
+    Para responder a este item foram implementadas duas funções: uma para calcular o número de iterações e $\mathbb{P}[f(x) \neq g(x)]$ para uma faixa de diferentes números de pontos (código \ref{cod:perceptron_relationship}) e outra para plotar os resultados (código \ref{cod:perceptron_relationship_plot}). O código das duas pode ser observado abaixo.
+
+
+    \begin{lstlisting}[language=Python, caption=Cálculo da probabilidade de erro e do número de iterações, label=cod:perceptron_relationship]
+        def relationship(num_points_list):
+            num_iter_medio = list()
+            lista_erro_medio = list()
+            for num_points in num_points_list:
+                num_iter = list()
+                lista_erro = list()
+                for _ in range(1000):
+                    dataset = Dataset(10000 + num_points)
+                    data, labels = dataset.generate_dataset()
+                    x_train, x_test, y_train, y_test = train_test_split(
+                        data, labels, train_size=num_points, stratify = labels)
+                    perceptron = Perceptron2D()
+                    iter, _ = perceptron.fit(x_train,y_train)
+                    num_iter.append(iter)
+                    y_predicted = perceptron.classificar(x_test)
+                    erro = np.mean(y_test != y_predicted)
+                    lista_erro.append(erro)
+                num_iter_medio.append(np.mean(num_iter))  
+                lista_erro_medio.append(np.mean(lista_erro))
+            return num_iter_medio, lista_erro_medio
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python, caption=Plot da probabilidade de erro e do número de iterações, label=cod:perceptron_relationship_plot]
+        def plot_relationship(num_points_list, num_iter_medio, lista_erro_medio):
+            fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+            ax.plot(num_points_list,num_iter_medio,c="blue",label="Iterações")
+            ax.set_title("Curvas de relação")
+            ax.set_xlabel('Nº de pontos')
+            ax.set_ylabel('Iterações')
+            ax2=ax.twinx()
+            ax2.plot(num_points_list,lista_erro_medio,c="red", label='P[f(x)\u2260g(x)]')
+            ax2.set_ylabel('P[f(x)\u2260g(x)]')
+            fig.legend(loc='upper center', bbox_to_anchor=(0.5, 0.9))
+            fig.tight_layout()
+        plt.show()
+    \end{lstlisting}
+
+    O resultado para o tamanho $N$ da amostra variando de 10 a 100 com passo 2 pode ser observado na figura \ref{fig:perceptron_relationship_plot}. 
+
+    \begin{figure}[H]
+        \caption{Resultado para o tamanho do dataset variando de 10 a 100 com passo 2}
+           \centering
+           \includegraphics[width=12cm]{perceptron_relationship_plot.png}
+        \label{fig:perceptron_relationship_plot}
+    \end{figure}
+
+    A quantidade de iterações para o PLA convergir, como constatado nos itens 1 e 3, oscila bastante, porém, pela figura, é possível observar que ela tem uma tendencia de alta conforme $N$ aumenta. Já a probabilidade de erro $\mathbb{P}[f(x) \neq g(x)]$ visivelmente apresenta uma queda exponencial com o aumento de $N$. Conclui-se que, com o aumento de $N$, o algoritmo se torna mais confiável, porém demora mais para ser treinado.
+    
+    
 \end{enumerate}
