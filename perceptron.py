@@ -144,11 +144,10 @@ def plot_relationship(num_points_list, num_iter_medio, lista_erro_medio):
 
 
 if __name__ == "__main__":
-    # teste()
-    # calc_num_iter(num_points = 100)
-    # calc_p_erro(num_points = 100)
-    # num_points_list = np.arange(10, 100, 50, dtype=int)
-    num_points_list = [10, 20]
+    teste()
+    calc_num_iter(num_points = 100)
+    calc_p_erro(num_points = 100)
+    num_points_list = np.arange(10, 101, 2, dtype=int)
     num_iter_medio, lista_erro_medio = relationship(num_points_list)
     plot_relationship(num_points_list, num_iter_medio, lista_erro_medio)
 

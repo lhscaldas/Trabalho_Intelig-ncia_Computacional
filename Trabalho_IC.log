@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.5.6)  20 MAY 2024 16:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.5.6)  20 MAY 2024 17:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -426,7 +426,7 @@ Overfull \hbox (11.16994pt too wide) in paragraph at lines 232--233
 <perceptron_relationship_plot.png, id=42, 578.16pt x 578.16pt>
 File: perceptron_relationship_plot.png Graphic file (type png)
 <use perceptron_relationship_plot.png>
-Package pdftex.def Info: perceptron_relationship_plot.png  used on input line 290.
+Package pdftex.def Info: perceptron_relationship_plot.png  used on input line 279.
 (pdftex.def)             Requested size: 341.43306pt x 341.42903pt.
  [8]) [9 <./perceptron_relationship_plot.png>]
 \openout2 = `regressao_linear.aux'.
@@ -454,15 +454,15 @@ L3 programming layer <2024-04-11>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 9022 strings out of 474369
- 150279 string characters out of 5740515
+ 9024 strings out of 474369
+ 150301 string characters out of 5740515
  2346754 words of memory out of 5000000
- 31288 multiletter control sequences out of 15000+600000
+ 31290 multiletter control sequences out of 15000+600000
  570430 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  70i,7n,79p,975b,1859s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Trabalho_IC.pdf (11 pages, 460909 bytes).
+Output written on Trabalho_IC.pdf (11 pages, 460189 bytes).
 PDF statistics:
  120 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

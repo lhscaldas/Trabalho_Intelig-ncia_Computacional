@@ -25,7 +25,7 @@ Para responder os itens referentes a este problema, foi implementado em Python u
             self.N = N # tamanho do dataset
             self.a = 0 # coeficiente angular
             self.b = 0 # coeficiente linear
-    
+
         # Método para gerar a linha da função target
         def generate_random_line(self):
             point1 = np.random.uniform(-1, 1, 2) # ponto aleatorio no domínio
@@ -35,14 +35,14 @@ Para responder os itens referentes a este problema, foi implementado em Python u
             self.a = a
             self.b = b
             return a, b
-    
+
         # Método para classificar pontos de acordo a função target
         def classify_point(self, point):
             a = self.a
             b = self.b
             y_reta = a*point[0] + b    
             return np.sign(point[1] - y_reta) # verifica se a coordenada y do ponto está acima ou abaixo da reta
-    
+
         # Método para gerar a base de dados D
         def generate_dataset(self):
             N = self.N
@@ -55,9 +55,9 @@ Para responder os itens referentes a este problema, foi implementado em Python u
     # Classe para criar e treinar o perceptron 2D
     class Perceptron2D:
         def __init__(self, max_iter=10000):
-            self.max_iter = max_iter
-            self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
-        
+        self.max_iter = max_iter
+        self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
+
         # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
         def fit(self, data, labels): 
             n_samples = len(data)
@@ -72,7 +72,7 @@ Para responder os itens referentes a este problema, foi implementado em Python u
                         errors += 1
                 iterations += 1
             return iterations, self.w
-        
+
         # Método para classificar um dataset com base nos pesos aprendidos.
         def classificar(self, data):
             n_samples = len(data)
@@ -145,7 +145,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
     Para responder a esse item foi implementada a seguinte função:
 
     \begin{lstlisting}[language=Python, caption=Cálculo do número de iterações, label=cod:perceptron_num_iter]
-        def calc_num_iter(num_points):
+        def calc_num_iter(num_points, verbose = True):
             num_iter = list()
             for _ in range(1000):
                 dataset = Dataset(num_points)
@@ -154,8 +154,8 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
                 perceptron = Perceptron2D()
                 iter, _ = perceptron.fit(data,labels)
                 num_iter.append(iter)
-        
-            print(f"{np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
+            if verbose: print(f"{np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
+            return num_iter
     \end{lstlisting}
 
     O resultado após 1000 execuções do experimento, com a variável $num\_points = 10$, foi uma média de $5.0490(\approx 5)$ iterações, com desvio padrão de $7.7770(\approx 8)$ iterações, mínimo de 2 iterações e máximo de 99 iterações. Nota-se que o número de iterações pode variar bastante entre uma iteração e outra. Como 5 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
@@ -177,20 +177,20 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
     $\mathbb{P}[f(x) \neq g(x)]$ pode ser estimada computacionalmente gerando-se uma quiantidade suficientemente grande de pontos novos e calculando o percentual de erro na classificação desses pontos. Para responder esse item foram realizadas 1000 execuções, nas quais foram gerados 10010 pontos, sendo 10 utilizados para o treinamento do perceptron e 10 mil utilizados para teste. A cada execução foi calculado o perceltual de erro, isto é, a quantidade de vezes que a classificação do perceptron foi diferente da função target divido pela quantidade de pontos. No final das execuções, $\mathbb{P}[f(x) \neq g(x)]$ foi estimada fazendo a média do percentual de erro em cada execução. A Implementação pode ser vista abaixo:
 
     \begin{lstlisting}[language=Python, caption=Cálculo da probabilidade de erro, label=cod:perceptron_p_erro]
-        def calc_p_erro(num_points, train_size):
+        def calc_p_erro(num_points, verbose = True):
             lista_erro = list()
             for _ in range(1000):
-                dataset = Dataset(num_points)
+                dataset = Dataset(num_points+10000) # mais 10mil pontos para teste
                 data, labels = dataset.generate_dataset()
                 x_train, x_test, y_train, y_test = train_test_split(
-                    data, labels, train_size=train_size, stratify = labels)
+                    data, labels, train_size=num_points, stratify = labels)
                 perceptron = Perceptron2D()
                 perceptron.fit(x_train,y_train)
                 y_predicted = perceptron.classificar(x_test)
                 erro = np.mean(y_test != y_predicted)
                 lista_erro.append(erro)
-        
-            print(f"P[f(x)\u2260g(x)] = {np.mean(lista_erro):.4f}")
+            if verbose: print(f"P[f(x)\u2260g(x)] = {np.mean(lista_erro):.4f}")
+            return lista_erro
     \end{lstlisting}
 
     O resultado após 1000 execuções, com $num\_points = 10010$ e $train\_size = 10$, foi  $\mathbb{P}[f(x) \neq g(x)] = 0.0671 = 6.71\%$. Como 0.0671 está mais próximo de 0.1 do que de 0.01, o \textcolor{red}{\textbf{item c}} foi selecionado. 
@@ -229,7 +229,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
 
     \textbf{Justificativa:}
 
-    Para responder a este item foi utilizada a mesma função do item 2 (código \ref{cod:perceptron_p_erro}), com $num\_points = 10100$ e $train\_size = 100$.
+    Para responder a este item foi utilizada a mesma função do item 2 (código \ref{cod:perceptron_p_erro}), com $num\_points = 100$.
 
     O resultado após 1000 execuções foi  $\mathbb{P}[f(x) \neq g(x)] = 0.0069 = 0.69\%$. Como 0.0069 está mais próximo de 0.01 do que de 0.001, o \textcolor{red}{\textbf{item b}} foi selecionado. 
      
@@ -249,19 +249,8 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
             num_iter_medio = list()
             lista_erro_medio = list()
             for num_points in num_points_list:
-                num_iter = list()
-                lista_erro = list()
-                for _ in range(1000):
-                    dataset = Dataset(10000 + num_points)
-                    data, labels = dataset.generate_dataset()
-                    x_train, x_test, y_train, y_test = train_test_split(
-                        data, labels, train_size=num_points, stratify = labels)
-                    perceptron = Perceptron2D()
-                    iter, _ = perceptron.fit(x_train,y_train)
-                    num_iter.append(iter)
-                    y_predicted = perceptron.classificar(x_test)
-                    erro = np.mean(y_test != y_predicted)
-                    lista_erro.append(erro)
+                num_iter = calc_num_iter(num_points, verbose=False)
+                lista_erro = calc_p_erro(num_points, verbose=False)
                 num_iter_medio.append(np.mean(num_iter))  
                 lista_erro_medio.append(np.mean(lista_erro))
             return num_iter_medio, lista_erro_medio
@@ -279,7 +268,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
             ax2.set_ylabel('P[f(x)\u2260g(x)]')
             fig.legend(loc='upper center', bbox_to_anchor=(0.5, 0.9))
             fig.tight_layout()
-        plt.show()
+            plt.show()
     \end{lstlisting}
 
     O resultado para o tamanho $N$ da amostra variando de 10 a 100 com passo 2 pode ser observado na figura \ref{fig:perceptron_relationship_plot}. 
