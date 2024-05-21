@@ -38,8 +38,8 @@ class Dataset:
 
 # Classe para criar e treinar o perceptron 2D
 class Perceptron2D:
-    def __init__(self):
-        self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
+    def __init__(self, weights = np.zeros(3)):
+        self.w = weights # inicializa os pesos (incluindo o w_0)
     
     # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
     def fit(self, data, labels): 
@@ -97,7 +97,7 @@ def teste():
     plt.show()
 
 def calc_num_iter(num_points, verbose = True):
-    num_iter = list()
+    lista_iter = list()
     for _ in range(1000):
         target = Target()
         target.generate_random_line()
@@ -105,9 +105,9 @@ def calc_num_iter(num_points, verbose = True):
         data, labels = dataset.generate_dataset(target)
         perceptron = Perceptron2D()
         iter, _ = perceptron.fit(data,labels)
-        num_iter.append(iter)
-    if verbose: print(f"{np.mean(num_iter)} iterações com desvio padrão {np.std(num_iter):.4f} (min:{np.min(num_iter)}, máx:{np.max(num_iter)})")
-    return num_iter
+        lista_iter.append(iter)
+    if verbose: print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
+    return lista_iter
 
 def calc_p_erro(num_points, verbose = True):
     lista_erro = list()
@@ -126,19 +126,19 @@ def calc_p_erro(num_points, verbose = True):
     if verbose: print(f"P[f(x)\u2260g(x)] = {np.mean(lista_erro):.4f}")
     return lista_erro
 
-def relationship(num_points_list):
-    num_iter_medio = list()
+def relationship(lista_num_points):
+    lista_iter_medio = list()
     lista_erro_medio = list()
-    for num_points in num_points_list:
-        num_iter = calc_num_iter(num_points, verbose=False)
+    for num_points in lista_num_points:
+        lista_iter = calc_num_iter(num_points, verbose=False)
         lista_erro = calc_p_erro(num_points, verbose=False)
-        num_iter_medio.append(np.mean(num_iter))  
+        lista_iter_medio.append(np.mean(lista_iter))  
         lista_erro_medio.append(np.mean(lista_erro))
-    return num_iter_medio, lista_erro_medio
+    return lista_iter_medio, lista_erro_medio
 
-def plot_relationship(num_points_list, num_iter_medio, lista_erro_medio):
+def plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio):
     fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-    ax.plot(num_points_list,num_iter_medio,c="blue",label="Iterações")
+    ax.plot(num_points_list,lista_iter_medio,c="blue",label="Iterações")
     ax.set_title("Curvas de relação")
     ax.set_xlabel('Nº de pontos')
     ax.set_ylabel('Iterações')
@@ -151,12 +151,12 @@ def plot_relationship(num_points_list, num_iter_medio, lista_erro_medio):
 
 
 if __name__ == "__main__":
-    # teste()
-    # calc_num_iter(num_points = 100)
-    # calc_p_erro(num_points = 100)
-    num_points_list = np.arange(10, 101, 2, dtype=int)
-    num_iter_medio, lista_erro_medio = relationship(num_points_list)
-    plot_relationship(num_points_list, num_iter_medio, lista_erro_medio)
+    teste()
+    calc_num_iter(num_points = 10)
+    calc_p_erro(num_points = 10)
+    num_points_list = np.arange(10, 101, 50, dtype=int)
+    lista_iter_medio, lista_erro_medio = relationship(num_points_list)
+    plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio)
 
 
     
