@@ -65,19 +65,22 @@ class Perceptron2D:
 def scatterplot(data, labels, target, hipotese):
     a, b = target.a, target.b
     w = hipotese.w
-    # Plotar resultados
     plt.figure(figsize=(8, 6))
+    # plotar a função target
+    x = np.linspace(-1, 1, 100)
+    y_target = a*x+b
+    plt.plot(x, y_target, 'k-', label='Função Target (f)')
+    # plotar a hipótese
+    y_g = -(w[1] * x + w[0]) / w[2]
+    plt.plot(x, y_g, 'g-', label='Hipótese (g)')
+    # plotar os pontos
     x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
     y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
     x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
     y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
     plt.scatter(x_pos, y_pos, c='blue', label='+1')
     plt.scatter(x_neg, y_neg, c='red', label='-1')
-    x = np.linspace(-1, 1, 100)
-    y_target = a*x+b
-    y_g = -(w[1] * x + w[0]) / w[2]
-    plt.plot(x, y_g, 'g-', label='Hipótese (g)')
-    plt.plot(x, y_target, 'k-', label='Função Target (f)')
+    # ajustar a figura       
     plt.xlim(-1, 1)
     plt.ylim(-1, 1)
     plt.xlabel('x')

@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1716318714.99694 "c:/Users/lhsca/OneDrive/Documentos/Estudos/Mestrado/Disciplinas/Inteligência Computacional 1/Trabalho/Trabalho_IC.tex" "Trabalho_IC.pdf" "Trabalho_IC" 1716318716.56868 0
+["pdflatex"] 1716319455.86395 "c:/Users/lhsca/OneDrive/Documentos/Estudos/Mestrado/Disciplinas/Inteligência Computacional 1/Trabalho/Trabalho_IC.tex" "Trabalho_IC.pdf" "Trabalho_IC" 1716319457.29037 0
   "C:/Users/lhsca/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1715008201 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/lhsca/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1715008148 24240394 0e129e212a862dc916b90ad8e0b2ede1 ""
   "C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -100,16 +100,16 @@
   "C:/Users/lhsca/AppData/Local/Programs/MiKTeX/tex/latex/ulem/ulem.sty" 1578651445 15682 94f55b803e160cf7fb6e4d77d07cfe1d ""
   "C:/Users/lhsca/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "COPPE UFRJ.png" 1715007025 119268 e8bfcfc0017d81dba38fe40f6f3d3998 ""
-  "Trabalho_IC.aux" 1716318716 224 d9a3702c913edee692b371d7b4d1abb0 "pdflatex"
+  "Trabalho_IC.aux" 1716319457 224 d9a3702c913edee692b371d7b4d1abb0 "pdflatex"
   "Trabalho_IC.tex" 1716258375 2808 0e93d57d5fe053a66430e998f6d01db6 ""
   "c:/Users/lhsca/OneDrive/Documentos/Estudos/Mestrado/Disciplinas/Inteligência Computacional 1/Trabalho/Trabalho_IC.tex" 1716258375 2808 0e93d57d5fe053a66430e998f6d01db6 ""
-  "perceptron.aux" 1716318716 2929 f86a6d95ff0e142f9a9edc9f45e0c908 "pdflatex"
-  "perceptron.tex" 1716318651 17874 994c2ad9997aef43110e634eab673047 ""
-  "perceptron_plot.png" 1716318714 56144 cf04c6117b122225dd84c2e3e3160740 ""
+  "perceptron.aux" 1716319457 2938 370bdfd7da9f87e967156cb447c90fac "pdflatex"
+  "perceptron.tex" 1716319453 17883 d174fa6367e5b8be60ddd872fa8b424f ""
+  "perceptron_plot.png" 1716319388 53351 717a9a6b618b338d235386fc57634a46 ""
   "perceptron_relationship_plot.png" 1716258161 54939 9e9e6554355773a05a05b676c9739bed ""
-  "regressao_linear.aux" 1716318716 762 f65c7175ed83c8081c5c27b2964d92fc "pdflatex"
+  "regressao_linear.aux" 1716319457 762 f65c7175ed83c8081c5c27b2964d92fc "pdflatex"
   "regressao_linear.tex" 1716315073 3186 a188c21933cad44f7da1e6105a0cf752 ""
-  "regressao_nao_linear.aux" 1716318716 771 80303d1bc2c663fe4afe60a3670a6f50 "pdflatex"
+  "regressao_nao_linear.aux" 1716319457 771 80303d1bc2c663fe4afe60a3670a6f50 "pdflatex"
   "regressao_nao_linear.tex" 1716066094 1396 8de41d26ff882d012bb10bc8bd46b3fa ""
   (generated)
   "Trabalho_IC.aux"

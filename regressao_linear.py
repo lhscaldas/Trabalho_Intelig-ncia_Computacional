@@ -126,10 +126,10 @@ def calc_PLA_iter(num_points):
         lista_iter.append(iter)
     print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
 
-def calc_pocket_E_out(N1, N2):
+def calc_pocket_E_out(N1, N2, LinReg = False):
     lista_E_in = list()
     lista_E_out = list()
-    for _ in range(1000):
+    for _ in range(10):
         # Criar a função target
         target = Target()
         a, b = target.generate_random_line()
@@ -138,13 +138,19 @@ def calc_pocket_E_out(N1, N2):
         x_train, y_train = dataset_train.generate_dataset(target)
         selected_indices = np.random.choice(len(y_train), int(len(y_train) * 0.1), replace=False) # seleciona 10%
         y_train[selected_indices] *= -1 # inverte o valor de 10%
-        # Criar e treinar o classificador linear
-        linear = Linear()
-        w = linear.fit(x_train,y_train)
-        # Criar e treinar o perceptron com pocket
-        perceptron_mod = Perceptron2Dmod(weights=w)
-        _, _, E_in = perceptron_mod.pocket(x_train,y_train)
-        lista_E_in.append(E_in)
+        if LinReg:
+            # Criar e treinar o classificador linear
+            linear = Linear()
+            w = linear.fit(x_train,y_train)
+            # Criar e treinar o perceptron com pocket
+            perceptron_mod = Perceptron2Dmod(weights=w)
+            _, _, E_in = perceptron_mod.pocket(x_train,y_train)
+            lista_E_in.append(E_in)
+        else:
+            # Criar e treinar o perceptron com pocket
+            perceptron_mod = Perceptron2Dmod()
+            _, _, E_in = perceptron_mod.pocket(x_train,y_train)
+            lista_E_in.append(E_in)
         # Criar o dataset de teste
         dataset_test = Dataset(N2)
         x_test, y_test = dataset_test.generate_dataset(target)
