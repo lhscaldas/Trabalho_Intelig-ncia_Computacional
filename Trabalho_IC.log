@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.5.6)  21 MAY 2024 19:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.5.6)  21 MAY 2024 20:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -434,7 +434,29 @@ Package pdftex.def Info: perceptron_relationship_plot.png  used on input line 29
 
 
 
-] [11] [12] [13] [14]) [15]
+] [11] [12] [13] [14]
+<pocket_i10_w0.png, id=68, 578.16pt x 433.62pt>
+File: pocket_i10_w0.png Graphic file (type png)
+<use pocket_i10_w0.png>
+Package pdftex.def Info: pocket_i10_w0.png  used on input line 246.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
+<pocket_i50_w0.png, id=69, 578.16pt x 433.62pt>
+File: pocket_i50_w0.png Graphic file (type png)
+<use pocket_i50_w0.png>
+Package pdftex.def Info: pocket_i50_w0.png  used on input line 256.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
+ [15 <./pocket_i10_w0.png>]
+<pocket_i10_reglin.png, id=74, 578.16pt x 433.62pt>
+File: pocket_i10_reglin.png Graphic file (type png)
+<use pocket_i10_reglin.png>
+Package pdftex.def Info: pocket_i10_reglin.png  used on input line 266.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
+<pocket_i50_reglin.png, id=75, 578.16pt x 433.62pt>
+File: pocket_i50_reglin.png Graphic file (type png)
+<use pocket_i50_reglin.png>
+Package pdftex.def Info: pocket_i50_reglin.png  used on input line 276.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
+ [16 <./pocket_i50_w0.png> <./pocket_i10_reglin.png>]) [17 <./pocket_i50_reglin.png>]
 \openout2 = `regressao_nao_linear.aux'.
 
  (regressao_nao_linear.tex
@@ -442,7 +464,7 @@ Overfull \hbox (7.61932pt too wide) in paragraph at lines 10--11
 []\OT1/cmr/m/n/12 Execute a Re-gress~ao Li-near sem ne-nhuma trans-forma^^Xc~ao, usando o ve-tor de atri-bu-tos $(1\OML/cmm/m/it/12 ; x[]; x[]\OT1/cmr/m/n/12 )$
  []
 
-) [16
+) [18
 
 
 
@@ -453,17 +475,17 @@ L3 programming layer <2024-04-11>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 9069 strings out of 474369
- 150892 string characters out of 5740515
+ 9097 strings out of 474369
+ 151608 string characters out of 5740515
  2352754 words of memory out of 5000000
- 31335 multiletter control sequences out of 15000+600000
+ 31363 multiletter control sequences out of 15000+600000
  570430 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  70i,7n,79p,1289b,1861s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Trabalho_IC.pdf (16 pages, 477527 bytes).
+Output written on Trabalho_IC.pdf (18 pages, 628429 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
+ 150 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

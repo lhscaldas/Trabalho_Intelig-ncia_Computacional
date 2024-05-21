@@ -124,7 +124,7 @@ def calc_PLA_iter(num_points):
         lista_iter.append(iter)
     print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
 
-def calc_pocket_E_out(N1, N2, LinReg = False):
+def calc_pocket_E(N1, N2, i, LinReg = False):
     lista_E_in = list()
     lista_E_out = list()
     for _ in range(1000):
@@ -142,12 +142,12 @@ def calc_pocket_E_out(N1, N2, LinReg = False):
             w = linear.fit(x_train,y_train)
             # Criar e treinar o perceptron com pocket
             perceptron = Perceptron2D(weights=w)
-            _, _, E_in = perceptron.pocket(x_train,y_train)
+            _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
             lista_E_in.append(E_in)
         else: # pesos inicializados com 0
             # Criar e treinar o perceptron com pocket
             perceptron = Perceptron2D()
-            _, _, E_in = perceptron.pocket(x_train,y_train)
+            _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
             lista_E_in.append(E_in)
         # Criar o dataset de teste
         dataset_test = Dataset(N2)
@@ -165,10 +165,8 @@ def calc_pocket_E_out(N1, N2, LinReg = False):
 
     
 if __name__ == "__main__":
-    # teste()
-
+    teste()
     _, target, linear = calc_E_in(num_points=100)
     calc_E_out(num_points=1000, lista_target=target, lista_linear=linear)
     calc_PLA_iter(num_points=10)
-
-    # calc_pocket_E_out(N1 = 100, N2 = 1000, LinReg=False)
+    calc_pocket_E(N1 = 100, N2 = 1000, i = 50, LinReg = True)

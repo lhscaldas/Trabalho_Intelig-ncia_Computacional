@@ -165,7 +165,7 @@ Para responder os itens referentes a este problema, foi implementado em Python u
 
     \textbf{Implementação:}
     
-    Para responder os subitens abaixo, foi adicionado à classe Perceptron2D (código \ref{cod:perceptron}) utilizada no problema 1 um método para fazer o treinamento utilizando o algoritmo Pocket (código \ref{cod:pocket}) e uma função para calcular o $E_{in}$ e $E_{out}$ médio em 1000 execuções de treinamento do Perceptron utilizando o algoritmo pocket (código \ref{cod:pocket}). A função permite escolher se irá ou não utilizar os pesos de um classificador linear como pesos iniciais do perceptron e também plota o dataset com a Função Target e a Hipótese para a última execução.
+    Para responder os subitens abaixo, foi adicionado à classe Perceptron2D (código \ref{cod:perceptron}), utilizada no problema 1, um método para fazer o treinamento utilizando o algoritmo Pocket (código \ref{cod:pocket}) e foi implementada também uma função para calcular o $E_{in}$ e $E_{out}$ médio (código \ref{cod:calc_pocket_E}) em 1000 execuções de treinamento do Perceptron utilizando o algoritmo Pocket. A função permite escolher se irá ou não utilizar os pesos de um classificador linear como pesos iniciais do perceptron e também plota o dataset com a Função Target e a Hipótese para a última execução.
 
     \begin{lstlisting}[language=Python, caption=Algoritmo Pocket, label=cod:pocket]
         # Método para treinar o perceptron usando o algoritmo Pocket
@@ -193,8 +193,8 @@ Para responder os itens referentes a este problema, foi implementado em Python u
         setattr(Perceptron2D, "pocket", pocket)
     \end{lstlisting}
 
-    \begin{lstlisting}[language=Python, caption=Cálculo do E\_out, label=cod:calc_pocket_E_out]
-        def calc_pocket_E_out(N1, N2, LinReg = False):
+    \begin{lstlisting}[language=Python, caption=Cálculo do E\_in e do E\_out, label=cod:calc_pocket_E]
+        def calc_pocket_E(N1, N2, i, LinReg = False):
             lista_E_in = list()
             lista_E_out = list()
             for _ in range(1000):
@@ -212,12 +212,12 @@ Para responder os itens referentes a este problema, foi implementado em Python u
                     w = linear.fit(x_train,y_train)
                     # Criar e treinar o perceptron com pocket
                     perceptron = Perceptron2D(weights=w)
-                    _, _, E_in = perceptron.pocket(x_train,y_train)
+                    _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
                     lista_E_in.append(E_in)
                 else: # pesos inicializados com 0
                     # Criar e treinar o perceptron com pocket
                     perceptron = Perceptron2D()
-                    _, _, E_in = perceptron.pocket(x_train,y_train)
+                    _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
                     lista_E_in.append(E_in)
                 # Criar o dataset de teste
                 dataset_test = Dataset(N2)
@@ -237,9 +237,45 @@ Para responder os itens referentes a este problema, foi implementado em Python u
     
     \begin{enumerate}
         \item Inicializando os pesos com 0; $i = 10$; $N_1 = 100$; $N_2 = 1000$.
+        
+        \textbf{Resposta:} $E_{in} = 0.2200$ e $E_{out} = 0.2540$.
+
+        \begin{figure}[H]
+            \caption{Scatterplot inicializando os pesos com 0 e $i = 10$}
+               \centering
+               \includegraphics[width=12cm]{pocket_i10_w0.png}
+        \end{figure}
+
         \item Inicializando os pesos com 0; $i = 50$; $N_1 = 100$; $N_2 = 1000$.
+        
+        \textbf{Resposta:} $E_{in} = 0.2400$ e $E_{out} = 0.0350$.
+
+        \begin{figure}[H]
+            \caption{Scatterplot inicializando os pesos com 0 e $i = 50$}
+               \centering
+               \includegraphics[width=12cm]{pocket_i50_w0.png}
+        \end{figure}
+
         \item Inicializando os pesos com Regressão Linear; $i = 10$; $N_1 = 100$; $N_2 = 1000$.
+        
+        \textbf{Resposta:} $E_{in} = 0.2200$ e $E_{out} = 0.01400$.
+
+        \begin{figure}[H]
+            \caption{Scatterplot inicializando os pesos com Regressão Linear e $i = 10$}
+               \centering
+               \includegraphics[width=12cm]{pocket_i10_reglin.png}
+        \end{figure}
+
         \item Inicializando os pesos com Regressão Linear; $i = 50$; $N_1 = 100$; $N_2 = 1000$.
+
+        \textbf{Resposta:} $E_{in} = 0.1800$ e $E_{out} = 0.0880$.
+
+        \begin{figure}[H]
+            \caption{Scatterplot inicializando os pesos com Regressão Linear e $i = 50$}
+               \centering
+               \includegraphics[width=12cm]{pocket_i50_reglin.png}
+        \end{figure}
+
     \end{enumerate}
 
     
