@@ -16,7 +16,7 @@ com os pontos utilizados para calcular $E_{out}$, assim como as retas correspond
 \newline \par
 \textbf{Implementação:}
 
-Para responder os itens referentes a este problema, foi implementado em Python um Perceptron 2D utilizando as fórmulas e procedimentos apresentados na primeira aula do professor Yaser Abu-Mostafa. Foram criadas três classes: uma para gerar a função target (código \ref{cod:target}), outra para gerar base de dados(código \ref{cod:dataset}) usando a função target, e a terceira pra criar e treinar o perceptron (código \ref{cod:perceptron}). Os seus códigos estão listados abaixo.
+Para responder os itens referentes a este problema, foi implementado em Python um Perceptron 2D utilizando as fórmulas e procedimentos apresentados na primeira aula do professor Yaser Abu-Mostafa. Foram criadas três classes: uma para gerar a função target (código \ref{cod:target}), outra para gerar base de dados(código \ref{cod:dataset}) usando a função target, e a terceira pra criar e treinar o perceptron e classificar utilizando o mesmo (código \ref{cod:perceptron}). Os seus códigos estão listados abaixo.
 
 \begin{lstlisting}[language=Python, caption=Geração da função target $f$, label=cod:target]
     # Classe para criar a função target
@@ -133,7 +133,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
     \label{fig:perceptron_plot}
 \end{figure}
 
-
+Pela figura \ref{fig:perceptron_plot}, é possível observar que a Hipótese (g) gera uma linha que, apesar de não sobrepor completamente a linha da Função Target (f), separa os pontos perfeitamente, resultado já esperado pelo treinamento utilizando o PLA, uma vez que esse algoritmo só converge quando o erro dentro da amosta $E_{in}$ é nulo.  
 
 \begin{enumerate}
     \item Considere $N = 10$. Quantas iterações demora, em média, para que o PLA convirja com $N = 10$
@@ -168,7 +168,9 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
             return num_iter
     \end{lstlisting}
 
-    O resultado após 1000 execuções do experimento, com a variável $num\_points = 10$, foi uma média de $5.0490(\approx 5)$ iterações, com desvio padrão de $7.7770(\approx 8)$ iterações, mínimo de 2 iterações e máximo de 99 iterações. Nota-se que o número de iterações pode variar bastante entre uma iteração e outra. Como 5 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
+    O resultado após 1000 execuções do experimento, com a variável $num\_points = 10$, foi uma média de $5.0490(\approx 5)$ iterações, com desvio padrão de $7.7770(\approx 8)$ iterações, mínimo de 2 iterações e máximo de 99 iterações. Nota-se que o número de iterações pode variar bastante entre uma execução e outra, o que se deve ao alto grau de aleatoriedade presente no problema, uma vez que tanto os pontos quanto a reta da Função Target são gerados de forma aleatória, podendo levar a configurações de diferentes níveis de dificuldade para o PLA convergir. 
+    % Apesar de toda essa aleatoriedade, em todas as execuções da função $calc\_num\_iter(num\_points)$ a média se manteve em torno de 5, tendo variando apenas o devio padrão.
+     Como 5 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
     
     \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 10$?
     
@@ -224,7 +226,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
 
     Para responder a este item foi utilizada a mesma função do item 1 (código \ref{cod:perceptron_num_iter}), com $num\_points = 100$. 
     
-    O resultado após 1000 execuções do experimento foi uma média de $32.981 (\approx 33)$ iterações, com desvio padrão de $164.5924 (\approx 165)$ iterações, mínimo de 2 iterações e máximo de41 49 iterações. Nota-se que novamente o número de iterações pode variar bastante entre uma iteração e outra. Como 33 está abaixo de 50 e não existe alternativa menor, o \textcolor{red}{\textbf{item a}} foi selecionado. 
+    O resultado após 1000 execuções do experimento foi uma média de $32.981 (\approx 33)$ iterações, com desvio padrão de $164.5924 (\approx 165)$ iterações, mínimo de 2 iterações e máximo de41 49 iterações. Nota-se que novamente o número de iterações pode variar bastante entre uma execução e outra, conforme já observado e explicado no item 1. Como 33 está abaixo de 50 e não existe alternativa menor, o \textcolor{red}{\textbf{item a}} foi selecionado. 
      
 
     \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 100$?
