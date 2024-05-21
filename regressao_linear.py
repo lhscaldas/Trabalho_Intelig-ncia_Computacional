@@ -29,31 +29,29 @@ class Linear():
         y_predicted = np.array([np.sign(np.dot(w_T, xn)) for xn in X])
         return y_predicted
     
-# Classe Perceptron2D com algoritmo pocket
-class Perceptron2Dmod(Perceptron2D):
-
-    # Método para treinar o perceptron usando o algoritmo Pocket
-    def pocket(self, data, labels, max_iter = 1000): 
-        n_samples = len(data)
-        X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
-        iterations = 0
-        E_in = 1
-        w = self.w
-        while E_in > 0 and iterations < max_iter:
-            E_in_atual = 0
-            w_atual = w
-            errors = 0
-            for i in range(n_samples):
-                if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
-                    w_atual += labels[i] * X_bias[i] # atualiza os pesos
-                    errors += 1
-            iterations += 1
-            E_in_atual = errors/n_samples
-            if E_in_atual < E_in: 
-                E_in = E_in_atual
-                w = w_atual
-        self.w = w
-        return iterations, self.w, E_in
+# Método para treinar o perceptron usando o algoritmo Pocket
+def pocket(self, data, labels, max_iter = 1000): 
+    n_samples = len(data)
+    X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
+    iterations = 0
+    E_in = 1
+    w = self.w
+    while E_in > 0 and iterations < max_iter:
+        E_in_atual = 0
+        w_atual = w
+        errors = 0
+        for i in range(n_samples):
+            if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
+                w_atual += labels[i] * X_bias[i] # atualiza os pesos
+                errors += 1
+        iterations += 1
+        E_in_atual = errors/n_samples
+        if E_in_atual < E_in: 
+            E_in = E_in_atual
+            w = w_atual
+    self.w = w
+    return iterations, self.w, E_in
+setattr(Perceptron2D, "pocket", pocket)
     
 def teste():
     # Criar a função target
@@ -92,7 +90,7 @@ def calc_E_in(num_points, verbose = True):
         lista_linear.append(linear)
     E_in = np.mean(lista_E_in)
     if verbose: print(f"E_in = {E_in:.4f}")
-    return E_in, lista_target, lista_linear # target e linear para usar no E_out
+    return E_in, lista_target, lista_linear
 
 def calc_E_out(num_points, lista_target, lista_linear, verbose = True):
     lista_E_out = list()
@@ -129,7 +127,7 @@ def calc_PLA_iter(num_points):
 def calc_pocket_E_out(N1, N2, LinReg = False):
     lista_E_in = list()
     lista_E_out = list()
-    for _ in range(10):
+    for _ in range(1000):
         # Criar a função target
         target = Target()
         a, b = target.generate_random_line()
@@ -138,24 +136,24 @@ def calc_pocket_E_out(N1, N2, LinReg = False):
         x_train, y_train = dataset_train.generate_dataset(target)
         selected_indices = np.random.choice(len(y_train), int(len(y_train) * 0.1), replace=False) # seleciona 10%
         y_train[selected_indices] *= -1 # inverte o valor de 10%
-        if LinReg:
+        if LinReg: # pesos inicializados com regressão linear
             # Criar e treinar o classificador linear
             linear = Linear()
             w = linear.fit(x_train,y_train)
             # Criar e treinar o perceptron com pocket
-            perceptron_mod = Perceptron2Dmod(weights=w)
-            _, _, E_in = perceptron_mod.pocket(x_train,y_train)
+            perceptron = Perceptron2D(weights=w)
+            _, _, E_in = perceptron.pocket(x_train,y_train)
             lista_E_in.append(E_in)
-        else:
+        else: # pesos inicializados com 0
             # Criar e treinar o perceptron com pocket
-            perceptron_mod = Perceptron2Dmod()
-            _, _, E_in = perceptron_mod.pocket(x_train,y_train)
+            perceptron = Perceptron2D()
+            _, _, E_in = perceptron.pocket(x_train,y_train)
             lista_E_in.append(E_in)
         # Criar o dataset de teste
         dataset_test = Dataset(N2)
         x_test, y_test = dataset_test.generate_dataset(target)
         # Classificar os pontos com a mesma hipotese do E_in
-        y_predicted = perceptron_mod.classificar(x_test)
+        y_predicted = perceptron.classificar(x_test)
         # Calcular E_out para essa execução
         E_out = np.mean(y_test != y_predicted)
         lista_E_out.append(E_out)
@@ -163,12 +161,14 @@ def calc_pocket_E_out(N1, N2, LinReg = False):
     print(f"E_in = {np.mean(E_in):.4f}")
     print(f"E_out = {np.mean(E_out):.4f}")
     # Plotar o dataset, a função target e a hipótese g da última execução
-    scatterplot(x_train, y_train, target, perceptron_mod)
+    scatterplot(x_train, y_train, target, perceptron)
 
     
 if __name__ == "__main__":
     # teste()
-    # _, target, linear = calc_E_in(num_points=100)
-    # calc_E_out(num_points=1000, lista_target=target, lista_linear=linear)
-    # calc_PLA_iter(num_points=10)
-    calc_pocket_E_out(N1 = 100, N2 = 1000)
+
+    _, target, linear = calc_E_in(num_points=100)
+    calc_E_out(num_points=1000, lista_target=target, lista_linear=linear)
+    calc_PLA_iter(num_points=10)
+
+    # calc_pocket_E_out(N1 = 100, N2 = 1000, LinReg=False)
