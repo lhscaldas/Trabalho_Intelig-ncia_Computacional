@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1716328213.04751 "c:/Users/lhsca/OneDrive/Documentos/Estudos/Mestrado/Disciplinas/Inteligência Computacional 1/Trabalho/Trabalho_IC.tex" "Trabalho_IC.pdf" "Trabalho_IC" 1716328214.52428 0
+["pdflatex"] 1716329040.98048 "c:/Users/lhsca/OneDrive/Documentos/Estudos/Mestrado/Disciplinas/Inteligência Computacional 1/Trabalho/Trabalho_IC.tex" "Trabalho_IC.pdf" "Trabalho_IC" 1716329042.54174 0
   "C:/Users/lhsca/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1715008201 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/lhsca/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1715008148 24240394 0e129e212a862dc916b90ad8e0b2ede1 ""
   "C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -100,16 +100,16 @@
   "C:/Users/lhsca/AppData/Local/Programs/MiKTeX/tex/latex/ulem/ulem.sty" 1578651445 15682 94f55b803e160cf7fb6e4d77d07cfe1d ""
   "C:/Users/lhsca/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "COPPE UFRJ.png" 1715007025 119268 e8bfcfc0017d81dba38fe40f6f3d3998 ""
-  "Trabalho_IC.aux" 1716328214 224 7ef6c81386e102c9e2771841e886c9c8 "pdflatex"
+  "Trabalho_IC.aux" 1716329042 224 03285ef7e0cded96914f1e8d091ddf72 "pdflatex"
   "Trabalho_IC.tex" 1716258375 2808 0e93d57d5fe053a66430e998f6d01db6 ""
   "c:/Users/lhsca/OneDrive/Documentos/Estudos/Mestrado/Disciplinas/Inteligência Computacional 1/Trabalho/Trabalho_IC.tex" 1716258375 2808 0e93d57d5fe053a66430e998f6d01db6 ""
-  "perceptron.aux" 1716328214 2938 370bdfd7da9f87e967156cb447c90fac "pdflatex"
+  "perceptron.aux" 1716329042 2938 370bdfd7da9f87e967156cb447c90fac "pdflatex"
   "perceptron.tex" 1716326873 17883 d174fa6367e5b8be60ddd872fa8b424f ""
   "perceptron_plot.png" 1716319388 53351 717a9a6b618b338d235386fc57634a46 ""
   "perceptron_relationship_plot.png" 1716258161 54939 9e9e6554355773a05a05b676c9739bed ""
-  "regressao_linear.aux" 1716328214 1476 d7d4899a5e6c8c872449f0c9e01cb37e "pdflatex"
-  "regressao_linear.tex" 1716328212 10782 03514f72b4addfad032b5918fcb7f145 ""
-  "regressao_nao_linear.aux" 1716328214 772 c32ba879270366e0f63640ecedb25bbe "pdflatex"
+  "regressao_linear.aux" 1716329042 1815 b3370c0544f272964ddb2831e39ffa6c "pdflatex"
+  "regressao_linear.tex" 1716329038 14852 60bae2be14c71bdf0127b87a9a898881 ""
+  "regressao_nao_linear.aux" 1716329042 772 0328af38696c19978f9c5928dcd9ba16 "pdflatex"
   "regressao_nao_linear.tex" 1716066094 1396 8de41d26ff882d012bb10bc8bd46b3fa ""
   (generated)
   "Trabalho_IC.aux"

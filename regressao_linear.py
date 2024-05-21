@@ -46,7 +46,7 @@ def pocket(self, data, labels, max_iter = 1000):
                 errors += 1
         iterations += 1
         E_in_atual = errors/n_samples
-        if E_in_atual < E_in: 
+        if E_in_atual < E_in: # atualiza os pesos e o E_in apenas se o E_in for menor que o anterior
             E_in = E_in_atual
             w = w_atual
     self.w = w
