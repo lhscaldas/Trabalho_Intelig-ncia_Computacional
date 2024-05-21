@@ -1,11 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
 
-# Classe para criar o dataset e a função target
-class Dataset:
-    def __init__(self, N): 
-        self.N = N # tamanho do dataset
+# Classe para criar a função target
+class Target:
+    def __init__(self): 
         self.a = 0 # coeficiente angular
         self.b = 0 # coeficiente linear
 
@@ -18,7 +16,7 @@ class Dataset:
         self.a = a
         self.b = b
         return a, b
-
+    
     # Método para classificar pontos de acordo a função target
     def classify_point(self, point):
         a = self.a
@@ -26,17 +24,21 @@ class Dataset:
         y_reta = a*point[0] + b    
         return np.sign(point[1] - y_reta) # verifica se a coordenada y do ponto está acima ou abaixo da reta
 
+# Classe para criar o dataset
+class Dataset:
+    def __init__(self, N): 
+        self.N = N # tamanho do dataset
+
     # Método para gerar a base de dados D
-    def generate_dataset(self):
+    def generate_dataset(self, target):
         N = self.N
         data = np.random.uniform(-1, 1, (N, 2)) # gera N pontos no R2 com coordenadas entre [-1, 1]
-        labels = np.array([self.classify_point(point) for point in data])
+        labels = np.array([target.classify_point(point) for point in data])
         return data, labels
 
 # Classe para criar e treinar o perceptron 2D
 class Perceptron2D:
-    def __init__(self, max_iter=10000):
-        self.max_iter = max_iter
+    def __init__(self):
         self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
     
     # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
@@ -45,7 +47,7 @@ class Perceptron2D:
         X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
         iterations = 0
         errors = 1
-        while (errors > 0) and (iterations <= self.max_iter):
+        while errors > 0:
             errors = 0
             for i in range(n_samples):
                 if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
@@ -61,11 +63,13 @@ class Perceptron2D:
         return np.sign(np.dot(X_bias, self.w)) # verifica o sinal do produto escalar entre x e w
 
 def teste():
-    # Criar o dataset e a função targe
+    # Criar a função target
+    target = Target()
+    a, b = target.generate_random_line()
+    # Criar o dataset e a função target
     num_points = 100
     dataset = Dataset(num_points)
-    a, b = dataset.generate_random_line()
-    data, labels = dataset.generate_dataset()
+    data, labels = dataset.generate_dataset(target)
     # Criar e treinar o perceptron
     perceptron = Perceptron2D()
     _, w = perceptron.fit(data,labels)
@@ -95,9 +99,10 @@ def teste():
 def calc_num_iter(num_points, verbose = True):
     num_iter = list()
     for _ in range(1000):
+        target = Target()
+        target.generate_random_line()
         dataset = Dataset(num_points)
-        dataset.generate_random_line()
-        data, labels = dataset.generate_dataset()
+        data, labels = dataset.generate_dataset(target)
         perceptron = Perceptron2D()
         iter, _ = perceptron.fit(data,labels)
         num_iter.append(iter)
@@ -107,10 +112,12 @@ def calc_num_iter(num_points, verbose = True):
 def calc_p_erro(num_points, verbose = True):
     lista_erro = list()
     for _ in range(1000):
-        dataset = Dataset(num_points+10000) # mais 10mil pontos para teste
-        data, labels = dataset.generate_dataset()
-        x_train, x_test, y_train, y_test = train_test_split(
-            data, labels, train_size=num_points, stratify = labels)
+        target = Target()
+        target.generate_random_line()
+        dataset_train = Dataset(num_points)
+        x_train, y_train = dataset_train.generate_dataset(target)
+        dataset_test = Dataset(10000) # mais 10mil pontos
+        x_test, y_test = dataset_test.generate_dataset(target)
         perceptron = Perceptron2D()
         perceptron.fit(x_train,y_train)
         y_predicted = perceptron.classificar(x_test)
@@ -144,9 +151,9 @@ def plot_relationship(num_points_list, num_iter_medio, lista_erro_medio):
 
 
 if __name__ == "__main__":
-    teste()
-    calc_num_iter(num_points = 100)
-    calc_p_erro(num_points = 100)
+    # teste()
+    # calc_num_iter(num_points = 100)
+    # calc_p_erro(num_points = 100)
     num_points_list = np.arange(10, 101, 2, dtype=int)
     num_iter_medio, lista_erro_medio = relationship(num_points_list)
     plot_relationship(num_points_list, num_iter_medio, lista_erro_medio)

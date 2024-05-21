@@ -16,16 +16,15 @@ com os pontos utilizados para calcular $E_{out}$, assim como as retas correspond
 \newline \par
 \textbf{Implementação:}
 
-Para responder os itens referentes a este problema, foi implementado em Python um Perceptron 2D utilizando as fórmulas e procedimentos apresentados na primeira aula do professor Yaser Abu-Mostafa. Foram criadas duas classes: uma para gerar a base de dados e a função target (código \ref{cod:database}) e outra pra criar e treinar o perceptron (código \ref{cod:perceptron}). Ambos os códigos estão listados abaixo.
+Para responder os itens referentes a este problema, foi implementado em Python um Perceptron 2D utilizando as fórmulas e procedimentos apresentados na primeira aula do professor Yaser Abu-Mostafa. Foram criadas três classes: uma para gerar a função target (código \ref{cod:target}), outra para gerar base de dados(código \ref{cod:dataset}) usando a função target, e a terceira pra criar e treinar o perceptron (código \ref{cod:perceptron}). Os seus códigos estão listados abaixo.
 
-\begin{lstlisting}[language=Python, caption=Geração do da base de dados $D$, label=cod:database]
-    # Classe para criar o dataset e a função target
-    class Dataset:
-        def __init__(self, N): 
-            self.N = N # tamanho do dataset
+\begin{lstlisting}[language=Python, caption=Geração da função target $f$, label=cod:target]
+    # Classe para criar a função target
+    class Target:
+        def __init__(self):
             self.a = 0 # coeficiente angular
             self.b = 0 # coeficiente linear
-
+    
         # Método para gerar a linha da função target
         def generate_random_line(self):
             point1 = np.random.uniform(-1, 1, 2) # ponto aleatorio no domínio
@@ -35,19 +34,26 @@ Para responder os itens referentes a este problema, foi implementado em Python u
             self.a = a
             self.b = b
             return a, b
-
+        
         # Método para classificar pontos de acordo a função target
         def classify_point(self, point):
             a = self.a
             b = self.b
             y_reta = a*point[0] + b    
             return np.sign(point[1] - y_reta) # verifica se a coordenada y do ponto está acima ou abaixo da reta
+\end{lstlisting}
 
+\begin{lstlisting}[language=Python, caption=Geração do da base de dados $D$, label=cod:dataset]
+    # Classe para criar o dataset
+    class Dataset:
+        def __init__(self, N): 
+            self.N = N # tamanho do dataset
+    
         # Método para gerar a base de dados D
-        def generate_dataset(self):
+        def generate_dataset(self, target):
             N = self.N
             data = np.random.uniform(-1, 1, (N, 2)) # gera N pontos no R2 com coordenadas entre [-1, 1]
-            labels = np.array([self.classify_point(point) for point in data])
+            labels = np.array([target.classify_point(point) for point in data])
             return data, labels
 \end{lstlisting}
 
@@ -85,11 +91,13 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
 
 \begin{lstlisting}[language=Python, caption=Teste das classes, label=cod:perceptron_teste]
     def teste():
-        # Criar o dataset e a função targe
+        # Criar a função target
+        target = Target()
+        a, b = target.generate_random_line()
+        # Criar o dataset e a função target
         num_points = 100
         dataset = Dataset(num_points)
-        a, b = dataset.generate_random_line()
-        data, labels = dataset.generate_dataset()
+        data, labels = dataset.generate_dataset(target)
         # Criar e treinar o perceptron
         perceptron = Perceptron2D()
         _, w = perceptron.fit(data,labels)
@@ -115,6 +123,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
         plt.tight_layout(rect=[0, 0, 1, 1])
         plt.grid(True)
         plt.show()
+
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -148,9 +157,10 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
         def calc_num_iter(num_points, verbose = True):
             num_iter = list()
             for _ in range(1000):
+                target = Target()
+                target.generate_random_line()
                 dataset = Dataset(num_points)
-                dataset.generate_random_line()
-                data, labels = dataset.generate_dataset()
+                data, labels = dataset.generate_dataset(target)
                 perceptron = Perceptron2D()
                 iter, _ = perceptron.fit(data,labels)
                 num_iter.append(iter)
@@ -180,10 +190,12 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
         def calc_p_erro(num_points, verbose = True):
             lista_erro = list()
             for _ in range(1000):
-                dataset = Dataset(num_points+10000) # mais 10mil pontos para teste
-                data, labels = dataset.generate_dataset()
-                x_train, x_test, y_train, y_test = train_test_split(
-                    data, labels, train_size=num_points, stratify = labels)
+                target = Target()
+                target.generate_random_line()
+                dataset_train = Dataset(num_points)
+                x_train, y_train = dataset_train.generate_dataset(target)
+                dataset_test = Dataset(10000) # mais 10mil pontos
+                x_test, y_test = dataset_test.generate_dataset(target)
                 perceptron = Perceptron2D()
                 perceptron.fit(x_train,y_train)
                 y_predicted = perceptron.classificar(x_test)
@@ -274,7 +286,7 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
     O resultado para o tamanho $N$ da amostra variando de 10 a 100 com passo 2 pode ser observado na figura \ref{fig:perceptron_relationship_plot}. 
 
     \begin{figure}[H]
-        \caption{Resultado para o tamanho do dataset variando de 10 a 100 com passo 2}
+        \caption{Resultado para $N$ variando de 10 a 100 com passo 2}
            \centering
            \includegraphics[width=12cm]{perceptron_relationship_plot.png}
         \label{fig:perceptron_relationship_plot}

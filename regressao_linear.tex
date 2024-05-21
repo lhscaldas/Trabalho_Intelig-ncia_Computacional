@@ -6,10 +6,48 @@ $\mathcal{X} = [-1, 1] \times [-1, 1]$, e assim por diante.
 
 \begin{enumerate}
     \item Considere $N = 100$. Use Regressão Linear para encontrar $g$ e calcule $E_{in}$, a fração de pontos dentro da amostra que foram classificados incorretamente (armazene os $g$'s pois eles serão usados no item seguinte). Repita o experimento 1000 vezes. Qual dos valores abaixo é mais próximo do $E_{in}$ médio?
+    
+    \begin{enumerate}
+        \item 0
+        \item 0.001
+        \item 0.01
+        \item 0.1
+        \item 0.5
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
 
     \item Agora, gere 1000 pontos novos e use eles para estimar o $Eout$ dos $g$'s que você encontrou no item anterior. Novamente, realize 1000 execuções. Qual dos valores abaixo é mais próximo do $E_{out}$ médio?
+    
+    \begin{enumerate}
+        \item 0
+        \item 0.001
+        \item 0.01
+        \item 0.1
+        \item 0.5
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
 
     \item Agora, considere $N = 10$. Depois de encontrar os pesos usando Regressão Linear, use-os como um vetor de pesos iniciais para o Algoritmo de Aprendizagem Perceptron (PLA). Execute o PLA até que ele convirja num vetor final de pesos que separa perfeitamente os pontos dentro-de-amostra. Dentre as opções abaixo, qual é mais próxima do número médio de iterações (sobre 1000 execuções) que o PLA demora para convergir?
     
+    \begin{enumerate}
+        \item 1
+        \item 15
+        \item 300
+        \item 5000
+        \item 10000
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
+    
     \item Vamos agora avaliar o desempenho da versão pocket do PLA em um conjunto de dados que não é linearmente separável. Para criar este conjunto, gere uma base de treinamento com N2 pontos como foi feito até agora, mas selecione aleatoriamente 10\% dos pontos e inverta seus rótulos. Em seguida, implemente a versão pocket do PLA, treine-a neste conjunto não-linearmente separável, e avalie seu $E_{out}$ numa nova base de N2 pontos na qual você não aplicará nenhuma inversão de rótulos. Repita para 1000 execuções, e mostre o $E_{in}$ e $E_{out}$ médios para as seguintes configurações (não esqueça dos gráficos scatterplot, como anteriormente):
+    
+    \begin{enumerate}
+        \item 0
+        \item 0.001
+        \item 0.01
+        \item 0.1
+        \item 0.5
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
+
+    
 \end{enumerate}
