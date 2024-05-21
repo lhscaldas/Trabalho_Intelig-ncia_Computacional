@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from perceptron import Target, Dataset, Perceptron2D
+from perceptron import Target, Dataset, Perceptron2D, scatterplot
 
 # Classe para criar e treinar o classificador linear
 class Linear():
@@ -29,6 +29,32 @@ class Linear():
         y_predicted = np.array([np.sign(np.dot(w_T, xn)) for xn in X])
         return y_predicted
     
+# Classe Perceptron2D com algoritmo pocket
+class Perceptron2Dmod(Perceptron2D):
+
+    # Método para treinar o perceptron usando o algoritmo Pocket
+    def pocket(self, data, labels, max_iter = 1000): 
+        n_samples = len(data)
+        X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
+        iterations = 0
+        E_in = 1
+        w = self.w
+        while E_in > 0 and iterations < max_iter:
+            E_in_atual = 0
+            w_atual = w
+            errors = 0
+            for i in range(n_samples):
+                if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
+                    w_atual += labels[i] * X_bias[i] # atualiza os pesos
+                    errors += 1
+            iterations += 1
+            E_in_atual = errors/n_samples
+            if E_in_atual < E_in: 
+                E_in = E_in_atual
+                w = w_atual
+        self.w = w
+        return iterations, self.w, E_in
+    
 def teste():
     # Criar a função target
     target = Target()
@@ -41,27 +67,7 @@ def teste():
     linear = Linear()
     w = linear.fit(data,labels)
     # Plotar resultados
-    plt.figure(figsize=(8, 6))
-    x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
-    y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
-    x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
-    y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
-    plt.scatter(x_pos, y_pos, c='blue', label='+1')
-    plt.scatter(x_neg, y_neg, c='red', label='-1')
-    x = np.linspace(-1, 1, 100)
-    y_target = a*x+b
-    y_g = -(w[1] * x + w[0]) / w[2]
-    plt.plot(x, y_g, 'g-', label='Hipótese (g)')
-    plt.plot(x, y_target, 'k-', label='Função Target (f)')
-    plt.xlim(-1, 1)
-    plt.ylim(-1, 1)
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title('Base de dados com o Target (f) e a Hipótese (g)')
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.tight_layout(rect=[0, 0, 1, 1])
-    plt.grid(True)
-    plt.show()
+    scatterplot(data, labels, target, linear)
 
 def calc_E_in(num_points, verbose = True):
     lista_E_in = list()
@@ -107,7 +113,7 @@ def calc_PLA_iter(num_points):
     for _ in range(1000):
         # Criar a função target
         target = Target()
-        a, b = target.generate_random_line()
+        target.generate_random_line()
         # Criar o dataset
         dataset = Dataset(num_points)
         data, labels = dataset.generate_dataset(target)
@@ -116,12 +122,47 @@ def calc_PLA_iter(num_points):
         w = linear.fit(data,labels)
         # Criar e treinar o perceptron
         perceptron = Perceptron2D(weights=w)
-        iter, _ = perceptron.fit(data,labels)
+        iter, _ = perceptron.pla(data,labels)
         lista_iter.append(iter)
     print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
+
+def calc_pocket_E_out(N1, N2):
+    lista_E_in = list()
+    lista_E_out = list()
+    for _ in range(1000):
+        # Criar a função target
+        target = Target()
+        a, b = target.generate_random_line()
+        # Criar o dataset de treinamento
+        dataset_train = Dataset(N1)
+        x_train, y_train = dataset_train.generate_dataset(target)
+        selected_indices = np.random.choice(len(y_train), int(len(y_train) * 0.1), replace=False) # seleciona 10%
+        y_train[selected_indices] *= -1 # inverte o valor de 10%
+        # Criar e treinar o classificador linear
+        linear = Linear()
+        w = linear.fit(x_train,y_train)
+        # Criar e treinar o perceptron com pocket
+        perceptron_mod = Perceptron2Dmod(weights=w)
+        _, _, E_in = perceptron_mod.pocket(x_train,y_train)
+        lista_E_in.append(E_in)
+        # Criar o dataset de teste
+        dataset_test = Dataset(N2)
+        x_test, y_test = dataset_test.generate_dataset(target)
+        # Classificar os pontos com a mesma hipotese do E_in
+        y_predicted = perceptron_mod.classificar(x_test)
+        # Calcular E_out para essa execução
+        E_out = np.mean(y_test != y_predicted)
+        lista_E_out.append(E_out)
+    # Printar E_in e E_out médios
+    print(f"E_in = {np.mean(E_in):.4f}")
+    print(f"E_out = {np.mean(E_out):.4f}")
+    # Plotar o dataset, a função target e a hipótese g da última execução
+    scatterplot(x_train, y_train, target, perceptron_mod)
+
     
 if __name__ == "__main__":
     # teste()
     # _, target, linear = calc_E_in(num_points=100)
     # calc_E_out(num_points=1000, lista_target=target, lista_linear=linear)
-    calc_PLA_iter(num_points=10)
+    # calc_PLA_iter(num_points=10)
+    calc_pocket_E_out(N1 = 100, N2 = 1000)

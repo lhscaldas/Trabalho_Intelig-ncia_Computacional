@@ -42,7 +42,7 @@ class Perceptron2D:
         self.w = weights # inicializa os pesos (incluindo o w_0)
     
     # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
-    def fit(self, data, labels): 
+    def pla(self, data, labels): 
         n_samples = len(data)
         X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
         iterations = 0
@@ -62,17 +62,9 @@ class Perceptron2D:
         X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o bias X_0
         return np.sign(np.dot(X_bias, self.w)) # verifica o sinal do produto escalar entre x e w
 
-def teste():
-    # Criar a função target
-    target = Target()
-    a, b = target.generate_random_line()
-    # Criar o dataset e a função target
-    num_points = 100
-    dataset = Dataset(num_points)
-    data, labels = dataset.generate_dataset(target)
-    # Criar e treinar o perceptron
-    perceptron = Perceptron2D()
-    _, w = perceptron.fit(data,labels)
+def scatterplot(data, labels, target, hipotese):
+    a, b = target.a, target.b
+    w = hipotese.w
     # Plotar resultados
     plt.figure(figsize=(8, 6))
     x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
@@ -90,11 +82,25 @@ def teste():
     plt.ylim(-1, 1)
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.title('Base de dados com o Target (f) e a Hipótese (g)')
+    plt.title('Base de dados com a Função Target (f) e a Hipótese (g)')
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout(rect=[0, 0, 1, 1])
     plt.grid(True)
     plt.show()
+
+def teste():
+    # Criar a função target
+    target = Target()
+    a, b = target.generate_random_line()
+    # Criar o dataset e a função target
+    num_points = 100
+    dataset = Dataset(num_points)
+    data, labels = dataset.generate_dataset(target)
+    # Criar e treinar o perceptron
+    perceptron = Perceptron2D()
+    _, w = perceptron.pla(data,labels)
+    # Plotar resultados
+    scatterplot(data, labels, target, perceptron)
 
 def calc_num_iter(num_points, verbose = True):
     lista_iter = list()
@@ -104,7 +110,7 @@ def calc_num_iter(num_points, verbose = True):
         dataset = Dataset(num_points)
         data, labels = dataset.generate_dataset(target)
         perceptron = Perceptron2D()
-        iter, _ = perceptron.fit(data,labels)
+        iter, _ = perceptron.pla(data,labels)
         lista_iter.append(iter)
     if verbose: print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
     return lista_iter
@@ -119,7 +125,7 @@ def calc_p_erro(num_points, verbose = True):
         dataset_test = Dataset(10000) # mais 10mil pontos
         x_test, y_test = dataset_test.generate_dataset(target)
         perceptron = Perceptron2D()
-        perceptron.fit(x_train,y_train)
+        perceptron.pla(x_train,y_train)
         y_predicted = perceptron.classificar(x_test)
         erro = np.mean(y_test != y_predicted)
         lista_erro.append(erro)

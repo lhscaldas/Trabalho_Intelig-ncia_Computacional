@@ -38,14 +38,13 @@ $\mathcal{X} = [-1, 1] \times [-1, 1]$, e assim por diante.
         % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
     \end{enumerate}
     
-    \item Vamos agora avaliar o desempenho da versão pocket do PLA em um conjunto de dados que não é linearmente separável. Para criar este conjunto, gere uma base de treinamento com N2 pontos como foi feito até agora, mas selecione aleatoriamente 10\% dos pontos e inverta seus rótulos. Em seguida, implemente a versão pocket do PLA, treine-a neste conjunto não-linearmente separável, e avalie seu $E_{out}$ numa nova base de N2 pontos na qual você não aplicará nenhuma inversão de rótulos. Repita para 1000 execuções, e mostre o $E_{in}$ e $E_{out}$ médios para as seguintes configurações (não esqueça dos gráficos scatterplot, como anteriormente):
+    \item Vamos agora avaliar o desempenho da versão pocket do PLA em um conjunto de dados que não é linearmente separável. Para criar este conjunto, gere uma base de treinamento com $N_1$ pontos como foi feito até agora, mas selecione aleatoriamente 10\% dos pontos e inverta seus rótulos. Em seguida, implemente a versão pocket do PLA, treine-a neste conjunto não-linearmente separável, e avalie seu $E_{out}$ numa nova base de $N_2$ pontos na qual você não aplicará nenhuma inversão de rótulos. Repita para 1000 execuções, e mostre o $E_{in}$ e $E_{out}$ médios para as seguintes configurações (não esqueça dos gráficos scatterplot, como anteriormente):
     
     \begin{enumerate}
-        \item 0
-        \item 0.001
-        \item 0.01
-        \item 0.1
-        \item 0.5
+        \item Inicializando os pesos com 0; $i = 10$; $N_1 = 100$; $N_2 = 1000$.
+        \item Inicializando os pesos com 0; $i = 50$; $N_1 = 100$; $N_2 = 1000$.
+        \item Inicializando os pesos com Regressão Linear; $i = 10$; $N_1 = 100$; $N_2 = 1000$.
+        \item Inicializando os pesos com Regressão Linear; $i = 50$; $N_1 = 100$; $N_2 = 1000$.
         % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
     \end{enumerate}
 

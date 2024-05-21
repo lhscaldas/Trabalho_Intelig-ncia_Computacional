@@ -64,7 +64,7 @@ Para responder os itens referentes a este problema, foi implementado em Python u
             self.w = weights # inicializa os pesos (incluindo o w_0)
         
         # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
-        def fit(self, data, labels): 
+        def pla(self, data, labels): 
             n_samples = len(data)
             X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
             iterations = 0
@@ -86,9 +86,37 @@ Para responder os itens referentes a este problema, foi implementado em Python u
 \end{lstlisting}
 
 
-Para testar as classes, foi feita uma função para plotar uma base de dados de 100 pontos com a função target $f$ gerada e a hipótese $g$ com a reta calculada pelo PLA (código \ref{cod:perceptron_teste}). O resultado pode ser observado na figura \ref{fig:perceptron_plot}. 
+Para testar as classes, foram feitas duas funções: uma para plotar uma base de dados junto com uma função target $f$ e uma hipótese $g$ (código \ref{cod:scatterplot}) e outra para gerar uma função target $f$, uma base de dados, e uma hipótese $g$ (um perceptron com pesos calculados pelo PLA) para serem plotadas pela primeira função (código \ref{cod:perceptron_test}). O resultado pode ser observado na figura \ref{fig:perceptron_plot}. 
 
-\begin{lstlisting}[language=Python, caption=Teste das classes, label=cod:perceptron_teste]
+\begin{lstlisting}[language=Python, caption=Plotagem de dataset com função target (f) e hipótese (g), label=cod:scatterplot]
+    def scatterplot(data, labels, target, hipotese):
+    a, b = target.a, target.b
+    w = hipotese.w
+    # Plotar resultados
+    plt.figure(figsize=(8, 6))
+    x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
+    y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
+    x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
+    y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
+    plt.scatter(x_pos, y_pos, c='blue', label='+1')
+    plt.scatter(x_neg, y_neg, c='red', label='-1')
+    x = np.linspace(-1, 1, 100)
+    y_target = a*x+b
+    y_g = -(w[1] * x + w[0]) / w[2]
+    plt.plot(x, y_g, 'g-', label='Hipótese (g)')
+    plt.plot(x, y_target, 'k-', label='Função Target (f)')
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('Base de dados com a Função Target (f) e a Hipótese (g)')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout(rect=[0, 0, 1, 1])
+    plt.grid(True)
+    plt.show()
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Teste das classes, label=cod:perceptron_test]
     def teste():
         # Criar a função target
         target = Target()
@@ -99,29 +127,9 @@ Para testar as classes, foi feita uma função para plotar uma base de dados de 
         data, labels = dataset.generate_dataset(target)
         # Criar e treinar o perceptron
         perceptron = Perceptron2D()
-        _, w = perceptron.fit(data,labels)
+        _, w = perceptron.pla(data,labels)
         # Plotar resultados
-        plt.figure(figsize=(8, 6))
-        x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
-        y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
-        x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
-        y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
-        plt.scatter(x_pos, y_pos, c='blue', label='+1')
-        plt.scatter(x_neg, y_neg, c='red', label='-1')
-        x = np.linspace(-1, 1, 100)
-        y_target = a*x+b
-        y_g = -(w[1] * x + w[0]) / w[2]
-        plt.plot(x, y_g, 'g-', label='Hipótese (g)')
-        plt.plot(x, y_target, 'k-', label='Função Target (f)')
-        plt.xlim(-1, 1)
-        plt.ylim(-1, 1)
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.title('Base de dados com o Target (f) e a Hipótese (g)')
-        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        plt.tight_layout(rect=[0, 0, 1, 1])
-        plt.grid(True)
-        plt.show()
+        scatterplot(data, labels, target, perceptron)
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -160,7 +168,7 @@ Pela figura \ref{fig:perceptron_plot}, é possível observar que a Hipótese (g)
             dataset = Dataset(num_points)
             data, labels = dataset.generate_dataset(target)
             perceptron = Perceptron2D()
-            iter, _ = perceptron.fit(data,labels)
+            iter, _ = perceptron.pla(data,labels)
             lista_iter.append(iter)
         if verbose: print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
         return lista_iter
@@ -197,7 +205,7 @@ Pela figura \ref{fig:perceptron_plot}, é possível observar que a Hipótese (g)
             dataset_test = Dataset(10000) # mais 10mil pontos
             x_test, y_test = dataset_test.generate_dataset(target)
             perceptron = Perceptron2D()
-            perceptron.fit(x_train,y_train)
+            perceptron.pla(x_train,y_train)
             y_predicted = perceptron.classificar(x_test)
             erro = np.mean(y_test != y_predicted)
             lista_erro.append(erro)
