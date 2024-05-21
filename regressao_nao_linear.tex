@@ -9,8 +9,38 @@ Gere um conjunto de treinamento de $N = 1000$ pontos em $\mathcal{X} = [-1, 1] \
 \begin{enumerate}
     \item Execute a Regressão Linear sem nenhuma transformação, usando o vetor de atributos $(1, x_1, x_2)$ para encontrar o peso $w$. Qual é o valor aproximado de classificação do erro médio dentro da amostra $E_{in}$ (medido ao longo de 1000 execuções)?
     
-    \item gora, transforme os $N = 1000$ dados de treinamento seguindo o vetor de atributos não-linear $(1, x_1, x_2, x_1x_2, x_1^2, x_2^2)$. Encontre o vetor $\tilde{w}$ que corresponda à solução da Regressão Linear. Quais das hipóteses a seguir é a mais próxima à que você encontrou? Avalie o resultado médio obtido após 1000 execuções.
+    \begin{enumerate}
+        \item 0
+        \item 0.1
+        \item 0.3
+        \item 0.5
+        \item 0.8
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
+    
+    \item Agora, transforme os $N = 1000$ dados de treinamento seguindo o vetor de atributos não-linear $(1, x_1, x_2, x_1x_2, x_1^2, x_2^2)$. Encontre o vetor $\tilde{w}$ que corresponda à solução da Regressão Linear. Quais das hipóteses a seguir é a mais próxima à que você encontrou? Avalie o resultado médio obtido após 1000 execuções.
+    
+    \begin{enumerate}
+        \item $g(x_1,x_2) = sign(-1-0.05x_1+0.08x_2+0.13x_1x_2+1.5x_1^2+1.5x_2^2)$
+        \item $g(x_1,x_2) = sign(-1-0.05x_1+0.08x_2+0.13x_1x_2+1.5x_1^2+15x_2^2)$
+        \item $g(x_1,x_2) = sign(-1-0.05x_1+0.08x_2+0.13x_1x_2+15x_1^2+1.5x_2^2)$
+        \item $g(x_1,x_2) = sign(-1-1.5x_1+0.08x_2+0.13x_1x_2+0.05x_1^2+0.05x_2^2)$
+        \item $g(x_1,x_2) = sign(-1-0.05x_1+0.08x_2+1.5x_1x_2+0.15x_1^2+0.15x_2^2)$
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
     
     \item Qual o valor mais próximo do erro de classificação fora da amostra $E_{out}$ de sua hipótese na questão anterior? (Estime-o gerando um novo conjunto de 1000 pontos e usando 1000 execuções diferentes, como antes).
+    
+    \begin{enumerate}
+        \item 0
+        \item 0.1
+        \item 0.3
+        \item 0.5
+        \item 0.8
+        % [\textcolor{red}{(c)}]\textcolor{red}{0.01}\addtocounter{enumii}{1}
+    \end{enumerate}
+
+
 \end{enumerate}
+
 
