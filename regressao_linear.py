@@ -9,7 +9,6 @@ class Linear():
     
     # Método para calcular a matriz X
     def calc_matriz_X(self, data):
-        N = 5
         n_samples = len(data)
         X = np.hstack([np.ones((n_samples, 1)), data]) # adiciona coluna de 1s
         return X

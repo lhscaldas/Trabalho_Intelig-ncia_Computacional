@@ -95,7 +95,7 @@ def teste():
     # Criar a função target
     target = Target()
     a, b = target.generate_random_line()
-    # Criar o dataset e a função target
+    # Criar o dataset
     num_points = 100
     dataset = Dataset(num_points)
     data, labels = dataset.generate_dataset(target)

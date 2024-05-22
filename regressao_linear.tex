@@ -7,7 +7,7 @@ $\mathcal{X} = [-1, 1] \times [-1, 1]$, e assim por diante.
 newline \par
 \textbf{Implementação:}
 
-Para responder os itens referentes a este problema, foi implementado em Python uma classe para gerar um Classificador Linear (código \ref{cod:reglin}), utilizando as fórmulas e procedimentos apresentados na terceira aula do professor Yaser Abu-Mostafa. A classe possui três métodos: um para calcular a matriz de entradas $X$, outro para treinar o classificador e a terceira para classificar pontos utilizando o mesmo. Para gerar a função target e gerar o dataset foram reaproveitadas as mesmas classes apresentadas nos códigos \ref{cod:target} e \ref{cod:dataset}.
+
 
 \begin{lstlisting}[language=Python, caption=Classificador por Regressão Linear, label=cod:reglin]
     # Classe para criar e treinar o classificador linear
@@ -17,7 +17,6 @@ Para responder os itens referentes a este problema, foi implementado em Python u
         
         # Método para calcular a matriz X
         def calc_matriz_X(self, data):
-            N = 5
             n_samples = len(data)
             X = np.hstack([np.ones((n_samples, 1)), data]) # adiciona coluna de 1s
             return X
@@ -157,7 +156,7 @@ Para responder os itens referentes a este problema, foi implementado em Python u
             print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
     \end{lstlisting}
 
-    Foram realizadas 1000 execuções e em cada uma foi gerada uma nova função target e um novo dataset com 10 pontos. Em cada iteração é treinada um Classificador Linear e seus pesos são utilizados como pesos iniciais para treinar um Perceptron 2D. O número de iterações internas realizadas no método $perceptron.pla(data,labels)$, que treina o Perceptron utilizando o PLA, é armazenado em uma lista e no final das execuções é calculada a média e o desvio padrão desses valores. O resultado após 1000 execuções do experimento foi uma média de $3.1460(\approx 3)$ iterações, com desvio padrão de $7.8247(\approx 8)$ iterações, mínimo de 1 iteração e máximo de 104 iterações. Ainda é possível observar uma grande variação do número de iterações entre cada execução, porém a média é menor do que a calculada no item 1 do problema 1 $(\approx 5)$. É possível constatar então que o PLA converge mais rápido quando seus pesos são inicializados por uma Regressão Linear. Como 3 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
+    Foram realizadas 1000 execuções e em cada uma foi gerada uma nova função target e um novo dataset com 10 pontos. Em cada iteração é treinado um Classificador Linear e seus pesos são utilizados como pesos iniciais para treinar um Perceptron 2D. O número de iterações internas realizadas no método $perceptron.pla(data,labels)$, que treina o Perceptron utilizando o PLA, é armazenado em uma lista e no final das execuções é calculada a média e o desvio padrão desses valores. O resultado após 1000 execuções do experimento foi uma média de $3.1460(\approx 3)$ iterações, com desvio padrão de $7.8247(\approx 8)$ iterações, mínimo de 1 iteração e máximo de 104 iterações. Ainda é possível observar uma grande variação do número de iterações entre cada execução, porém a média é menor do que a calculada no item 1 do problema 1 $(\approx 5)$. É possível constatar então que o PLA converge mais rápido quando seus pesos são inicializados por uma Regressão Linear. Como 3 está mais próximo de 1 do que de 15, o \textcolor{red}{\textbf{item a}} foi selecionado. 
     
     \item Vamos agora avaliar o desempenho da versão pocket do PLA em um conjunto de dados que não é linearmente separável. Para criar este conjunto, gere uma base de treinamento com $N_1$ pontos como foi feito até agora, mas selecione aleatoriamente 10\% dos pontos e inverta seus rótulos. Em seguida, implemente a versão pocket do PLA, treine-a neste conjunto não-linearmente separável, e avalie seu $E_{out}$ numa nova base de $N_2$ pontos na qual você não aplicará nenhuma inversão de rótulos. Repita para 1000 execuções, e mostre o $E_{in}$ e $E_{out}$ médios para as seguintes configurações (não esqueça dos gráficos scatterplot, como anteriormente):
     

@@ -121,7 +121,7 @@ Para testar as classes, foram feitas duas funções: uma para plotar uma base de
         # Criar a função target
         target = Target()
         a, b = target.generate_random_line()
-        # Criar o dataset e a função target
+        # Criar o dataset
         num_points = 100
         dataset = Dataset(num_points)
         data, labels = dataset.generate_dataset(target)
@@ -135,7 +135,7 @@ Para testar as classes, foram feitas duas funções: uma para plotar uma base de
 \begin{figure}[H]
     \caption{Base de dados com a Função Target $(f)$ e a Hipótese $(g)$}
        \centering
-       \includegraphics[width=\textwidth]{perceptron_plot.png}
+       \includegraphics[width=12cm]{perceptron_plot.png}
     \label{fig:perceptron_plot}
 \end{figure}
 
@@ -232,7 +232,7 @@ Pela figura \ref{fig:perceptron_plot}, é possível observar que a Hipótese (g)
 
     Para responder a este item foi utilizada a mesma função do item 1 (código \ref{cod:perceptron_num_iter}), com $num\_points = 100$. 
     
-    O resultado após 1000 execuções do experimento foi uma média de $32.981 (\approx 33)$ iterações, com desvio padrão de $164.5924 (\approx 165)$ iterações, mínimo de 2 iterações e máximo de41 49 iterações. Nota-se que novamente o número de iterações pode variar bastante entre uma execução e outra, conforme já observado e explicado no item 1. Como 33 está abaixo de 50 e não existe alternativa menor, o \textcolor{red}{\textbf{item a}} foi selecionado. 
+    O resultado após 1000 execuções do experimento foi uma média de $32.981 (\approx 33)$ iterações, com desvio padrão de $164.5924 (\approx 165)$ iterações, mínimo de 2 iterações e máximo de 49 iterações. Nota-se que novamente o número de iterações pode variar bastante entre uma execução e outra, conforme já observado e explicado no item 1. Como 33 está abaixo de 50 e não existe alternativa menor, o \textcolor{red}{\textbf{item a}} foi selecionado. 
      
 
     \item Qual das alternativas seguintes é mais próxima de $\mathbb{P}[f(x) \neq g(x)]$ para $N = 100$?

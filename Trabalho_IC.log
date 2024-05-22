@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.5.6)  21 MAY 2024 20:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.5.6)  22 MAY 2024 01:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -411,23 +411,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 14--16
 File: perceptron_plot.png Graphic file (type png)
 <use perceptron_plot.png>
 Package pdftex.def Info: perceptron_plot.png  used on input line 138.
-(pdftex.def)             Requested size: 500.484pt x 375.36066pt.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
  [4] [5 <./perceptron_plot.png>] [6]
 Overfull \hbox (11.16994pt too wide) in paragraph at lines 233--234
 []\OT1/cmr/m/n/12 Para res-pon-der a este item foi uti-li-zada a mesma fun^^Xc~ao do item 1 (c^^Sodigo 6[]), com $\OML/cmm/m/it/12 num[]points \OT1/cmr/m/n/12 =
  []
 
-[7]
+
 Overfull \hbox (11.16994pt too wide) in paragraph at lines 252--253
 []\OT1/cmr/m/n/12 Para res-pon-der a este item foi uti-li-zada a mesma fun^^Xc~ao do item 2 (c^^Sodigo 7[]), com $\OML/cmm/m/it/12 num[]points \OT1/cmr/m/n/12 =
  []
 
+[7]
 <perceptron_relationship_plot.png, id=42, 578.16pt x 578.16pt>
 File: perceptron_relationship_plot.png Graphic file (type png)
 <use perceptron_relationship_plot.png>
 Package pdftex.def Info: perceptron_relationship_plot.png  used on input line 299.
 (pdftex.def)             Requested size: 341.43306pt x 341.42903pt.
-[8]) [9 <./perceptron_relationship_plot.png>]
+ [8]) [9 <./perceptron_relationship_plot.png>]
 \openout2 = `regressao_linear.aux'.
 
  (regressao_linear.tex [10
@@ -438,54 +439,66 @@ Package pdftex.def Info: perceptron_relationship_plot.png  used on input line 29
 <pocket_i10_w0.png, id=68, 578.16pt x 433.62pt>
 File: pocket_i10_w0.png Graphic file (type png)
 <use pocket_i10_w0.png>
-Package pdftex.def Info: pocket_i10_w0.png  used on input line 246.
+Package pdftex.def Info: pocket_i10_w0.png  used on input line 245.
 (pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
 <pocket_i50_w0.png, id=69, 578.16pt x 433.62pt>
 File: pocket_i50_w0.png Graphic file (type png)
 <use pocket_i50_w0.png>
-Package pdftex.def Info: pocket_i50_w0.png  used on input line 256.
+Package pdftex.def Info: pocket_i50_w0.png  used on input line 255.
 (pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
  [15 <./pocket_i10_w0.png>]
 <pocket_i10_reglin.png, id=74, 578.16pt x 433.62pt>
 File: pocket_i10_reglin.png Graphic file (type png)
 <use pocket_i10_reglin.png>
-Package pdftex.def Info: pocket_i10_reglin.png  used on input line 266.
+Package pdftex.def Info: pocket_i10_reglin.png  used on input line 265.
 (pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
 <pocket_i50_reglin.png, id=75, 578.16pt x 433.62pt>
 File: pocket_i50_reglin.png Graphic file (type png)
 <use pocket_i50_reglin.png>
-Package pdftex.def Info: pocket_i50_reglin.png  used on input line 276.
+Package pdftex.def Info: pocket_i50_reglin.png  used on input line 275.
 (pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
  [16 <./pocket_i50_w0.png> <./pocket_i10_reglin.png>]) [17 <./pocket_i50_reglin.png>]
 \openout2 = `regressao_nao_linear.aux'.
 
- (regressao_nao_linear.tex
-Overfull \hbox (7.61932pt too wide) in paragraph at lines 10--11
+ (regressao_nao_linear.tex [18
+
+
+
+] [19]
+<naolinear_naolinear.png, id=92, 578.16pt x 433.62pt>
+File: naolinear_naolinear.png Graphic file (type png)
+<use naolinear_naolinear.png>
+Package pdftex.def Info: naolinear_naolinear.png  used on input line 137.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
+ [20]
+Overfull \hbox (7.61932pt too wide) in paragraph at lines 142--143
 []\OT1/cmr/m/n/12 Execute a Re-gress~ao Li-near sem ne-nhuma trans-forma^^Xc~ao, usando o ve-tor de atri-bu-tos $(1\OML/cmm/m/it/12 ; x[]; x[]\OT1/cmr/m/n/12 )$
  []
 
-) [18
-
-
-
-] (Trabalho_IC.aux (perceptron.aux) (regressao_linear.aux) (regressao_nao_linear.aux))
+[21 <./naolinear_naolinear.png>]
+<naolinear_linear.png, id=101, 578.16pt x 433.62pt>
+File: naolinear_linear.png Graphic file (type png)
+<use naolinear_linear.png>
+Package pdftex.def Info: naolinear_linear.png  used on input line 190.
+(pdftex.def)             Requested size: 341.43306pt x 256.07178pt.
+ [22 <./naolinear_linear.png>] [23]) [24] (Trabalho_IC.aux (perceptron.aux) (regressao_linear.aux) (regressao_nao_linear.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-04-11>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 9097 strings out of 474369
- 151608 string characters out of 5740515
+ 9188 strings out of 474369
+ 153007 string characters out of 5740515
  2352754 words of memory out of 5000000
- 31363 multiletter control sequences out of 15000+600000
- 570430 words of font info for 85 fonts, out of 8000000 for 9000
+ 31446 multiletter control sequences out of 15000+600000
+ 572892 words of font info for 93 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  70i,7n,79p,1289b,1861s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Trabalho_IC.pdf (18 pages, 628862 bytes).
+<C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/lhsca/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Trabalho_IC.pdf (24 pages, 761962 bytes).
 PDF statistics:
- 150 PDF objects out of 1000 (max. 8388607)
+ 178 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

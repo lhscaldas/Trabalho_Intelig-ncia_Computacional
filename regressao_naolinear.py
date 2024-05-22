@@ -1,0 +1,180 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+from perceptron import Dataset
+from regressao_linear import Linear
+
+# Classe para criar a função target não linear
+class TargetNaoLinear:
+
+    # Método para classificar pontos de acordo a função target
+    def classify_point(self, point): 
+        return np.sign(point[0]**2 + point[1]**2 - 0.6)
+    
+    # Método para criar uma elipse para plots
+    def criar_elipse(self):
+        r = np.sqrt(0.6)
+        elipse =  Ellipse(xy=(0,0), width=2*r, height=2*r, angle=np.degrees(0),
+                           edgecolor='k', fc='None', lw=2, label='Função Target (f)')
+        return elipse
+    
+# Classe para criar e treinar o classificador linear
+class NaoLinear(Linear, w = np.zeros(6)):
+    def __init__(self):
+        self.w = w  # inicializa os pesos (incluindo o w_0)
+    
+    # Modifica o método para calcular a matriz X
+    def calc_matriz_X(self, data):
+        X = list()
+        for point in data:
+            x1 = point[0]
+            x2 = point[1]
+            X.append([1, x1, x2, x1*x2, x1**2, x2**2])
+        return np.array(X)
+    
+    # Método novo para criar uma elipse para plots
+    def criar_elipse(self):
+        # Coeficientes da equação geral da cônica (Ax1^2 + Bx1x2 + Cx2^2 + Dx1 + Ex2 + F=0)
+        # relacionados com os pesos (1, x1, x2, x1x2, x1^2, x2^2)
+        A = self.w[4] # coef de x1^2
+        B = self.w[3] # coef de x1x2
+        C = self.w[5] # coef de x2^2
+        D = self.w[1] # coef de x1
+        E = self.w[2] # coef de x2
+        F = self.w[0] # termo independente
+        # Matrizes associadas à equação geral da cônica
+        M = np.array([[A, B / 2], [B / 2, C]])
+        offset = np.array([D, E])
+        # Calcular o centro da elipse
+        center = np.linalg.solve(-2 * M, offset)
+        # Calcular os semi-eixos e o ângulo de rotação
+        eigenvalues, eigenvectors = np.linalg.eigh(M)
+        order = np.argsort(eigenvalues)
+        eigenvalues = eigenvalues[order]
+        eigenvectors = eigenvectors[:, order]
+        semi_major = np.sqrt(-F / (eigenvalues[0] * eigenvalues[1])) / np.sqrt(eigenvalues[0])
+        semi_minor = np.sqrt(-F / (eigenvalues[0] * eigenvalues[1])) / np.sqrt(eigenvalues[1])
+        angle = np.arctan2(eigenvectors[1, 0], eigenvectors[0, 0])
+        # Criar a elipse
+        elipse =  Ellipse(xy=center, width=2 * semi_major, height=2 * semi_minor, angle=np.degrees(angle),
+                           edgecolor='g', fc='None', lw=2, label='Hipótese (g)')
+        return elipse
+    
+
+def scatterplot_nao_linear(data, labels, target, hipotese):
+    fig, ax = plt.subplots(subplot_kw={'aspect': 'equal'}, figsize=(8, 6))
+    # plotar a função target
+    elipse_target = target.criar_elipse()
+    ax.add_patch(elipse_target)
+    # plotar a hipótese
+    if type(hipotese) is NaoLinear:
+        elipse_hipotese = hipotese.criar_elipse()
+        ax.add_patch(elipse_hipotese)
+    elif type(hipotese) is Linear:
+        w = hipotese.w
+        x = np.linspace(-1, 1, 100)
+        y_g = -(w[1] * x + w[0]) / w[2]
+        plt.plot(x, y_g, 'g-', label='Hipótese (g)')
+    else:
+        return print("Hipotese não suportada")
+    # plotar os pontos
+    x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
+    y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
+    x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
+    y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
+    plt.scatter(x_pos, y_pos, c='blue', label='+1')
+    plt.scatter(x_neg, y_neg, c='red', label='-1')
+    # ajustar a figura       
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('Base de dados com a Função Target (f) não linear e Hipótese (g)')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout(rect=[0, 0, 1, 1])
+    plt.grid(True)
+    plt.show()
+
+def teste(num_points, hipotese):
+    # Criar a target não-linear
+    target = TargetNaoLinear()
+    # Criar o dataset
+    dataset = Dataset(num_points)
+    data, labels = dataset.generate_dataset(target)
+    # Adicionar ruido
+    selected_indices = np.random.choice(len(labels), int(len(labels) * 0.1), replace=False) # seleciona 10%
+    labels[selected_indices] *= -1 # inverte o valor de 10%
+    # Criar o classificador
+    hipotese.fit(data, labels)
+    # Plotar
+    scatterplot_nao_linear(data, labels, target, hipotese)
+
+def calc_Ein_linear(num_points, verbose = True):
+    lista_E_in = list()
+    for _ in range(1000):
+        # Criar a target não-linear
+        target = TargetNaoLinear()
+        # Criar o dataset
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Adicionar ruido
+        selected_indices = np.random.choice(len(labels), int(len(labels) * 0.1), replace=False) # seleciona 10%
+        labels[selected_indices] *= -1 # inverte o valor de 10%
+        # Criar o classificador não-linear
+        linear = Linear()
+        linear.fit(data, labels)
+        # Classificar os pontos
+        y_predicted = linear.classificar(data)
+        # Calcular E_in para essa execução
+        lista_E_in.append(np.mean(labels != y_predicted))
+    E_in = np.mean(lista_E_in)
+    # Plotar a última execução
+    if verbose: print(f"E_in = {E_in:.4f}")
+    return E_in
+
+def calc_w_naolinear(num_points, verbose = True):
+    lista_w = list()
+    for _ in range(1000):
+        # Criar a target não-linear
+        target = TargetNaoLinear()
+        # Criar o dataset
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Adicionar ruido
+        selected_indices = np.random.choice(len(labels), int(len(labels) * 0.1), replace=False) # seleciona 10%
+        labels[selected_indices] *= -1 # inverte o valor de 10%
+        # Criar o classificador não-linear
+        naolinear = NaoLinear()
+        w = naolinear.fit(data, labels)
+        # Armazenar os pesos
+        lista_w.append(w)
+    w = np.mean(lista_w, axis=0)
+    if verbose: 
+        np.set_printoptions(suppress=True)
+        print(f"w = {w}")
+    return w
+
+def calc_Eout_naolinear(num_points, w, verbose = True):
+    lista_E_out = list()
+    for _ in range(1000):
+        # Criar a target não-linear
+        target = TargetNaoLinear()
+        # Criar o dataset de teste
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Criar o classificador não-linear
+        naolinear = NaoLinear(w = w) # força a usar os pesos anteriores
+        # Classificar os pontos com a mesma hipotese do E_in
+        y_predicted = naolinear.classificar(data)
+        # Calcular E_out para essa execução
+        lista_E_out.append(np.mean(labels != y_predicted))
+    E_out = np.mean(lista_E_out)
+    if verbose: print(f"E_out = {E_out:.4f}")
+    return E_out
+
+if __name__ == "__main__":
+    teste(num_points = 100, hipotese = Linear())
+    teste(num_points = 100, hipotese = NaoLinear())
+    calc_Ein_linear(num_points=1000)
+    w = calc_w_naolinear(num_points=1000)
+    calc_Eout_naolinear(num_points=1000, w = w)
