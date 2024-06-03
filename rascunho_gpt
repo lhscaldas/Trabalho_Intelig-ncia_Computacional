@@ -1,192 +1,200 @@
 Leia o enunciado abaixo e verifique se as três classes python depois dele estão corretas para resolver o problema:
 
 
-Nestes problemas, nós vamos explorar como Regressão Linear pode ser usada em tarefas de classificação.
-Você usará o mesmo esquema de produção de pontos visto na parte acima do Perceptron, com $d = 2$,
-$\mathcal{X} = [-1, 1] \times [-1, 1]$, e assim por diante.
+Nestes problemas, nós vamos novamente aplicar Regressão Linear para classificação. Considere a função target
 
+$$f(x_1,x_2) = sign(x_1^2 + x_2^2 - 0.6) $$
+
+Gere um conjunto de treinamento de $N = 1000$ pontos em $\mathcal{X} = [-1, 1] \times [-1, 1]$ com probabilidade uniforme escolhendo cada $x \in \mathcal{X}$. Gere um ruído simulado selecionando aleatoriamente 10\% do conjunto de treinamento e invertendo o rótulo dos pontos selecionados.
 
 \begin{enumerate}
-    \item Considere $N = 100$. Use Regressão Linear para encontrar $g$ e calcule $E_{in}$, a fração de pontos dentro da amostra que foram classificados incorretamente (armazene os $g$'s pois eles serão usados no item seguinte). Repita o experimento 1000 vezes. Qual dos valores abaixo é mais próximo do $E_{in}$ médio?
+    \item Execute a Regressão Linear sem nenhuma transformação, usando o vetor de atributos $(1, x_1, x_2)$ para encontrar o peso $\boldsymbol{w}$. Qual é o valor aproximado de classificação do erro médio dentro da amostra $E_{in}$ (medido ao longo de 1000 execuções)?
 
+    \item Agora, transforme os $N = 1000$ dados de treinamento seguindo o vetor de atributos não-linear $(1, x_1, x_2, x_1x_2, x_1^2, x_2^2)$. Encontre o vetor $\tilde{\boldsymbol{w}}$ que corresponda à solução da Regressão Linear. Quais das hipóteses a seguir é a mais próxima à que você encontrou? Avalie o resultado médio obtido após 1000 execuções.
 
-    \item Agora, gere 1000 pontos novos e use eles para estimar o $Eout$ dos $g$'s que você encontrou no item anterior. Novamente, realize 1000 execuções. Qual dos valores abaixo é mais próximo do $E_{out}$ médio?
-
-    \item Agora, considere $N = 10$. Depois de encontrar os pesos usando Regressão Linear, use-os como um vetor de pesos iniciais para o Algoritmo de Aprendizagem Perceptron (PLA). Execute o PLA até que ele convirja num vetor final de pesos que separa perfeitamente os pontos dentro-de-amostra. Dentre as opções abaixo, qual é mais próxima do número médio de iterações (sobre 1000 execuções) que o PLA demora para convergir?
-
-    \item Vamos agora avaliar o desempenho da versão pocket do PLA em um conjunto de dados que não é linearmente separável. Para criar este conjunto, gere uma base de treinamento com $N_1$ pontos como foi feito até agora, mas selecione aleatoriamente 10\% dos pontos e inverta seus rótulos. Em seguida, implemente a versão pocket do PLA, treine-a neste conjunto não-linearmente separável, e avalie seu $E_{out}$ numa nova base de $N_2$ pontos na qual você não aplicará nenhuma inversão de rótulos. Repita para 1000 execuções, e mostre o $E_{in}$ e $E_{out}$ médios para as seguintes configurações (não esqueça dos gráficos scatterplot, como anteriormente):
+    \item Qual o valor mais próximo do erro de classificação fora da amostra $E_{out}$ de sua hipótese na questão anterior? (Estime-o gerando um novo conjunto de 1000 pontos e usando 1000 execuções diferentes, como antes).
 \end{enumerate}
+
 
 import numpy as np
 import matplotlib.pyplot as plt
-from perceptron import Target, Dataset, Perceptron2D, scatterplot
+from matplotlib.patches import Ellipse
+from perceptron import Dataset
+from regressao_linear import Linear
 
+# Classe para criar a função target não linear
+class TargetNaoLinear:
+
+    # Método para classificar pontos de acordo a função target
+    def classify_point(self, point): 
+        return np.sign(point[0]**2 + point[1]**2 - 0.6)
+    
+    # Método para criar uma elipse para plots
+    def criar_elipse(self):
+        r = np.sqrt(0.6)
+        elipse =  Ellipse(xy=(0,0), width=2*r, height=2*r, angle=np.degrees(0),
+                           edgecolor='k', fc='None', lw=2, label='Função Target (f)')
+        return elipse
+    
 # Classe para criar e treinar o classificador linear
-class Linear():
+class NaoLinear(Linear, w = np.zeros(6)):
     def __init__(self):
-        self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
+        self.w = w  # inicializa os pesos (incluindo o w_0)
     
-    # Método para calcular a matriz X
+    # Modifica o método para calcular a matriz X
     def calc_matriz_X(self, data):
-        n_samples = len(data)
-        X = np.hstack([np.ones((n_samples, 1)), data]) # adiciona coluna de 1s
-        return X
+        X = list()
+        for point in data:
+            x1 = point[0]
+            x2 = point[1]
+            X.append([1, x1, x2, x1*x2, x1**2, x2**2])
+        return np.array(X)
     
-    # Método para treinar o classificador linear
-    def fit(self, data, labels):
-        X = self.calc_matriz_X(data)
-        y = labels
-        X_T = np.transpose(X)
-        X_pseudo_inv = np.dot(np.linalg.inv(np.dot(X_T, X)), X_T)
-        self.w = np.dot(X_pseudo_inv, y)
-        return self.w
+    # Método novo para criar uma elipse para plots
+    def criar_elipse(self):
+        # Coeficientes da equação geral da cônica (Ax1^2 + Bx1x2 + Cx2^2 + Dx1 + Ex2 + F=0)
+        # relacionados com os pesos (1, x1, x2, x1x2, x1^2, x2^2)
+        A = self.w[4] # coef de x1^2
+        B = self.w[3] # coef de x1x2
+        C = self.w[5] # coef de x2^2
+        D = self.w[1] # coef de x1
+        E = self.w[2] # coef de x2
+        F = self.w[0] # termo independente
+        # Matrizes associadas à equação geral da cônica
+        M = np.array([[A, B / 2], [B / 2, C]])
+        offset = np.array([D, E])
+        # Calcular o centro da elipse
+        center = np.linalg.solve(-2 * M, offset)
+        # Calcular os semi-eixos e o ângulo de rotação
+        eigenvalues, eigenvectors = np.linalg.eigh(M)
+        order = np.argsort(eigenvalues)
+        eigenvalues = eigenvalues[order]
+        eigenvectors = eigenvectors[:, order]
+        semi_major = np.sqrt(-F / (eigenvalues[0] * eigenvalues[1])) / np.sqrt(eigenvalues[0])
+        semi_minor = np.sqrt(-F / (eigenvalues[0] * eigenvalues[1])) / np.sqrt(eigenvalues[1])
+        angle = np.arctan2(eigenvectors[1, 0], eigenvectors[0, 0])
+        # Criar a elipse
+        elipse =  Ellipse(xy=center, width=2 * semi_major, height=2 * semi_minor, angle=np.degrees(angle),
+                           edgecolor='g', fc='None', lw=2, label='Hipótese (g)')
+        return elipse
     
-    def classificar(self, data):
-        X = self.calc_matriz_X(data)
-        w_T = np.transpose(self.w)
-        y_predicted = np.array([np.sign(np.dot(w_T, xn)) for xn in X])
-        return y_predicted
-    
-# Método para treinar o perceptron usando o algoritmo Pocket
-def pocket(self, data, labels, max_iter = 1000): 
-    n_samples = len(data)
-    X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
-    iterations = 0
-    E_in = 1
-    w = self.w
-    while E_in > 0 and iterations < max_iter:
-        E_in_atual = 0
-        w_atual = w
-        errors = 0
-        for i in range(n_samples):
-            if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
-                w_atual += labels[i] * X_bias[i] # atualiza os pesos
-                errors += 1
-        iterations += 1
-        E_in_atual = errors/n_samples
-        if E_in_atual < E_in: # atualiza os pesos e o E_in apenas se o E_in for menor que o anterior
-            E_in = E_in_atual
-            w = w_atual
-    self.w = w
-    return iterations, self.w, E_in
-setattr(Perceptron2D, "pocket", pocket)
-    
-def teste():
-    # Criar a função target
-    target = Target()
-    a, b = target.generate_random_line()
-    # Criar o dataset e a função target
-    num_points = 100
+
+def scatterplot_nao_linear(data, labels, target, hipotese):
+    fig, ax = plt.subplots(subplot_kw={'aspect': 'equal'}, figsize=(8, 6))
+    # plotar a função target
+    elipse_target = target.criar_elipse()
+    ax.add_patch(elipse_target)
+    # plotar a hipótese
+    if type(hipotese) is NaoLinear:
+        elipse_hipotese = hipotese.criar_elipse()
+        ax.add_patch(elipse_hipotese)
+    elif type(hipotese) is Linear:
+        w = hipotese.w
+        x = np.linspace(-1, 1, 100)
+        y_g = -(w[1] * x + w[0]) / w[2]
+        plt.plot(x, y_g, 'g-', label='Hipótese (g)')
+    else:
+        return print("Hipotese não suportada")
+    # plotar os pontos
+    x_pos = [data[i][0] for i in range(len(data)) if labels[i] == 1]
+    y_pos = [data[i][1] for i in range(len(data)) if labels[i] == 1]
+    x_neg = [data[i][0] for i in range(len(data)) if labels[i] == -1]
+    y_neg = [data[i][1] for i in range(len(data)) if labels[i] == -1]
+    plt.scatter(x_pos, y_pos, c='blue', label='+1')
+    plt.scatter(x_neg, y_neg, c='red', label='-1')
+    # ajustar a figura       
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('Base de dados com a Função Target (f) não linear e Hipótese (g)')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout(rect=[0, 0, 1, 1])
+    plt.grid(True)
+    plt.show()
+
+def teste(num_points, hipotese):
+    # Criar a target não-linear
+    target = TargetNaoLinear()
+    # Criar o dataset
     dataset = Dataset(num_points)
     data, labels = dataset.generate_dataset(target)
-    # Criar e treinar o classificador linear
-    linear = Linear()
-    w = linear.fit(data,labels)
-    # Plotar resultados
-    scatterplot(data, labels, target, linear)
+    # Adicionar ruido
+    selected_indices = np.random.choice(len(labels), int(len(labels) * 0.1), replace=False) # seleciona 10%
+    labels[selected_indices] *= -1 # inverte o valor de 10%
+    # Criar o classificador
+    hipotese.fit(data, labels)
+    # Plotar
+    scatterplot_nao_linear(data, labels, target, hipotese)
 
-def calc_E_in(num_points, verbose = True):
+def calc_Ein_linear(num_points, verbose = True):
     lista_E_in = list()
-    lista_target = list()
-    lista_linear = list()
     for _ in range(1000):
-        # Criar a função target
-        target = Target()
-        a, b = target.generate_random_line()
+        # Criar a target não-linear
+        target = TargetNaoLinear()
         # Criar o dataset
         dataset = Dataset(num_points)
         data, labels = dataset.generate_dataset(target)
-        # Criar e treinar o classificador linear
+        # Adicionar ruido
+        selected_indices = np.random.choice(len(labels), int(len(labels) * 0.1), replace=False) # seleciona 10%
+        labels[selected_indices] *= -1 # inverte o valor de 10%
+        # Criar o classificador não-linear
         linear = Linear()
-        w = linear.fit(data,labels)
+        linear.fit(data, labels)
         # Classificar os pontos
         y_predicted = linear.classificar(data)
         # Calcular E_in para essa execução
         lista_E_in.append(np.mean(labels != y_predicted))
-        # Guardar para saida
-        lista_target.append(target)
-        lista_linear.append(linear)
     E_in = np.mean(lista_E_in)
+    # Plotar a última execução
     if verbose: print(f"E_in = {E_in:.4f}")
-    return E_in, lista_target, lista_linear
+    return E_in
 
-def calc_E_out(num_points, lista_target, lista_linear, verbose = True):
-    lista_E_out = list()
-    for target, linear in zip(lista_target, lista_linear):
-        # Criar o dataset com a mesma função target do E_in
+def calc_w_naolinear(num_points, verbose = True):
+    lista_w = list()
+    for _ in range(1000):
+        # Criar a target não-linear
+        target = TargetNaoLinear()
+        # Criar o dataset
         dataset = Dataset(num_points)
         data, labels = dataset.generate_dataset(target)
+        # Adicionar ruido
+        selected_indices = np.random.choice(len(labels), int(len(labels) * 0.1), replace=False) # seleciona 10%
+        labels[selected_indices] *= -1 # inverte o valor de 10%
+        # Criar o classificador não-linear
+        naolinear = NaoLinear()
+        w = naolinear.fit(data, labels)
+        # Armazenar os pesos
+        lista_w.append(w)
+    w = np.mean(lista_w, axis=0)
+    if verbose: 
+        np.set_printoptions(suppress=True)
+        print(f"w = {w}")
+    return w
+
+def calc_Eout_naolinear(num_points, w, verbose = True):
+    lista_E_out = list()
+    for _ in range(1000):
+        # Criar a target não-linear
+        target = TargetNaoLinear()
+        # Criar o dataset de teste
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Criar o classificador não-linear
+        naolinear = NaoLinear(w = w) # força a usar os pesos anteriores
         # Classificar os pontos com a mesma hipotese do E_in
-        y_predicted = linear.classificar(data)
+        y_predicted = naolinear.classificar(data)
         # Calcular E_out para essa execução
         lista_E_out.append(np.mean(labels != y_predicted))
     E_out = np.mean(lista_E_out)
     if verbose: print(f"E_out = {E_out:.4f}")
     return E_out
 
-def calc_PLA_iter(num_points):
-    lista_iter = list()
-    for _ in range(1000):
-        # Criar a função target
-        target = Target()
-        target.generate_random_line()
-        # Criar o dataset
-        dataset = Dataset(num_points)
-        data, labels = dataset.generate_dataset(target)
-        # Criar e treinar o classificador linear
-        linear = Linear()
-        w = linear.fit(data,labels)
-        # Criar e treinar o perceptron
-        perceptron = Perceptron2D(weights=w)
-        iter, _ = perceptron.pla(data,labels)
-        lista_iter.append(iter)
-    print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
-
-def calc_pocket_E(N1, N2, i, LinReg = False):
-    lista_E_in = list()
-    lista_E_out = list()
-    for _ in range(1000):
-        # Criar a função target
-        target = Target()
-        a, b = target.generate_random_line()
-        # Criar o dataset de treinamento
-        dataset_train = Dataset(N1)
-        x_train, y_train = dataset_train.generate_dataset(target)
-        selected_indices = np.random.choice(len(y_train), int(len(y_train) * 0.1), replace=False) # seleciona 10%
-        y_train[selected_indices] *= -1 # inverte o valor de 10%
-        if LinReg: # pesos inicializados com regressão linear
-            # Criar e treinar o classificador linear
-            linear = Linear()
-            w = linear.fit(x_train,y_train)
-            # Criar e treinar o perceptron com pocket
-            perceptron = Perceptron2D(weights=w)
-            _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
-            lista_E_in.append(E_in)
-        else: # pesos inicializados com 0
-            # Criar e treinar o perceptron com pocket
-            perceptron = Perceptron2D()
-            _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
-            lista_E_in.append(E_in)
-        # Criar o dataset de teste
-        dataset_test = Dataset(N2)
-        x_test, y_test = dataset_test.generate_dataset(target)
-        # Classificar os pontos com a mesma hipotese do E_in
-        y_predicted = perceptron.classificar(x_test)
-        # Calcular E_out para essa execução
-        E_out = np.mean(y_test != y_predicted)
-        lista_E_out.append(E_out)
-    # Printar E_in e E_out médios
-    print(f"E_in = {np.mean(E_in):.4f}")
-    print(f"E_out = {np.mean(E_out):.4f}")
-    # Plotar o dataset, a função target e a hipótese g da última execução
-    scatterplot(x_train, y_train, target, perceptron)
-
-    
 if __name__ == "__main__":
-    teste()
-    _, target, linear = calc_E_in(num_points=100)
-    calc_E_out(num_points=1000, lista_target=target, lista_linear=linear)
-    calc_PLA_iter(num_points=10)
-    calc_pocket_E(N1 = 100, N2 = 1000, i = 50, LinReg = True)
+    teste(num_points = 100, hipotese = Linear())
+    teste(num_points = 100, hipotese = NaoLinear())
+    calc_Ein_linear(num_points=1000)
+    w = calc_w_naolinear(num_points=1000)
+    calc_Eout_naolinear(num_points=1000, w = w)
 
 

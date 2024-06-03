@@ -19,8 +19,8 @@ class TargetNaoLinear:
         return elipse
     
 # Classe para criar e treinar o classificador linear
-class NaoLinear(Linear, w = np.zeros(6)):
-    def __init__(self):
+class NaoLinear(Linear):
+    def __init__(self, w = np.zeros(6)):
         self.w = w  # inicializa os pesos (incluindo o w_0)
     
     # Modifica o método para calcular a matriz X
