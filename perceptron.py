@@ -46,13 +46,14 @@ class Perceptron2D:
         n_samples = len(data)
         X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
         iterations = 0
-        errors = 1
-        while errors > 0:
-            errors = 0
-            for i in range(n_samples):
-                if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
-                    self.w += labels[i] * X_bias[i] # atualiza os pesos
-                    errors += 1
+        while True:
+            predictions = np.sign(np.dot(X_bias, self.w))
+            errors = labels != predictions
+            if not np.any(errors):
+                break
+            misclassified_indices = np.where(errors)[0]
+            random_choice = np.random.choice(misclassified_indices)
+            self.w += labels[random_choice] * X_bias[random_choice] # atualiza os pesos
             iterations += 1
         return iterations, self.w
     
@@ -160,12 +161,12 @@ def plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio):
 
 
 if __name__ == "__main__":
-    teste()
-    calc_num_iter(num_points = 10)
-    calc_p_erro(num_points = 10)
-    num_points_list = np.arange(10, 101, 50, dtype=int)
-    lista_iter_medio, lista_erro_medio = relationship(num_points_list)
-    plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio)
+    # teste()
+    calc_num_iter(num_points = 100)
+    # calc_p_erro(num_points = 10)
+    # num_points_list = np.arange(10, 101, 50, dtype=int)
+    # lista_iter_medio, lista_erro_medio = relationship(num_points_list)
+    # plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio)
 
 
     
