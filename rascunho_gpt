@@ -1,106 +1,192 @@
 Leia o enunciado abaixo e verifique se as três classes python depois dele estão corretas para resolver o problema:
 
 
-Neste problema, você criará a sua própria função target $f$ e uma base de dados $D$ para que possa ver como o
-Algoritmo de Aprendizagem Perceptron funciona. Escolha $d = 2$ pra que você possa visualizar o problema,
-e assuma $\chi = [-1, 1] \times [-1, 1]$ com probabilidade uniforme de escolher cada $x \in \mathcal{X}$ .
+Nestes problemas, nós vamos explorar como Regressão Linear pode ser usada em tarefas de classificação.
+Você usará o mesmo esquema de produção de pontos visto na parte acima do Perceptron, com $d = 2$,
+$\mathcal{X} = [-1, 1] \times [-1, 1]$, e assim por diante.
 
-Em cada execução, escolha uma reta aleatória no plano como sua função target $f$ (faça isso selecionando dois pontos aleatórios, uniformemente distribuídos em  $\chi = [-1, 1] \times [-1, 1]$, e pegando a reta que passa entre eles), de modo que um lado da reta mapeia pra +1 e o outro pra -1. Escolha os inputs $x_n$ da base de dados como um conjunto de pontos aleatórios (uniformemente em $ \mathcal{X}$ ), e avalie a função target em cada $x_n$ para pegar o output correspondente $y_n$.
 
-Agora, pra cada execução, use o Algoritmo de Aprendizagem Perceptron (PLA) para encontrar $g$. Inicie o PLA com um vetor de pesos $w$ zerado (considere que $sign(0) = 0$, de modo que todos os pontos estejam classificados erroneamente ao início), e a cada iteração faça com que o algoritmo escolha um ponto aleatório dentre os classificados erroneamente. Estamos interessados em duas quantidades: o número de iterações que o PLA demora para convergir pra $g$, e a divergência entre $f$ e $g$ que é $\mathbb{P}[f (x) \neq g(x)]$ (a probabilidade de que $f$ e $g$ vão divergir na classificação de um ponto aleatório). Você pode calcular essa probabilidade de maneira exata, ou então aproximá-la ao gerar uma quantidade suficientemente grande de novos pontos para estimá-la (por exemplo, 10.000).
+\begin{enumerate}
+    \item Considere $N = 100$. Use Regressão Linear para encontrar $g$ e calcule $E_{in}$, a fração de pontos dentro da amostra que foram classificados incorretamente (armazene os $g$'s pois eles serão usados no item seguinte). Repita o experimento 1000 vezes. Qual dos valores abaixo é mais próximo do $E_{in}$ médio?
 
-A fim de obter uma estimativa confiável para essas duas quantias, você deverá realizar 1000 execuções do experimento (cada execução do jeito descrito acima), tomando a média destas execuções como seu resultado
-final.
 
-Para ilustrar os resultados obtidos nos seus experimentos, acrescente ao seu relatório gráficos scatterplot
-com os pontos utilizados para calcular $E_{out}$, assim como as retas correspondentes à função target e à hipótese $g$ encontrada.
+    \item Agora, gere 1000 pontos novos e use eles para estimar o $Eout$ dos $g$'s que você encontrou no item anterior. Novamente, realize 1000 execuções. Qual dos valores abaixo é mais próximo do $E_{out}$ médio?
 
-# Classe para criar a função target
-class Target:
-    def __init__(self): 
-        self.a = 0 # coeficiente angular
-        self.b = 0 # coeficiente linear
+    \item Agora, considere $N = 10$. Depois de encontrar os pesos usando Regressão Linear, use-os como um vetor de pesos iniciais para o Algoritmo de Aprendizagem Perceptron (PLA). Execute o PLA até que ele convirja num vetor final de pesos que separa perfeitamente os pontos dentro-de-amostra. Dentre as opções abaixo, qual é mais próxima do número médio de iterações (sobre 1000 execuções) que o PLA demora para convergir?
 
-    # Método para gerar a linha da função target
-    def generate_random_line(self):
-        point1 = np.random.uniform(-1, 1, 2) # ponto aleatorio no domínio
-        point2 = np.random.uniform(-1, 1, 2) # ponto aleatorio no domínio
-        a = (point2[1] - point1[1]) / (point1[0] - point2[0]) # cálculo do coeficiente angular
-        b = point1[1] - a*point1[0] # cálculo do coeficiente linear
-        self.a = a
-        self.b = b
-        return a, b
+    \item Vamos agora avaliar o desempenho da versão pocket do PLA em um conjunto de dados que não é linearmente separável. Para criar este conjunto, gere uma base de treinamento com $N_1$ pontos como foi feito até agora, mas selecione aleatoriamente 10\% dos pontos e inverta seus rótulos. Em seguida, implemente a versão pocket do PLA, treine-a neste conjunto não-linearmente separável, e avalie seu $E_{out}$ numa nova base de $N_2$ pontos na qual você não aplicará nenhuma inversão de rótulos. Repita para 1000 execuções, e mostre o $E_{in}$ e $E_{out}$ médios para as seguintes configurações (não esqueça dos gráficos scatterplot, como anteriormente):
+\end{enumerate}
+
+import numpy as np
+import matplotlib.pyplot as plt
+from perceptron import Target, Dataset, Perceptron2D, scatterplot
+
+# Classe para criar e treinar o classificador linear
+class Linear():
+    def __init__(self):
+        self.w = np.zeros(3)  # inicializa os pesos (incluindo o w_0)
     
-    # Método para classificar pontos de acordo a função target
-    def classify_point(self, point):
-        a = self.a
-        b = self.b
-        y_reta = a*point[0] + b    
-        return np.sign(point[1] - y_reta) # verifica se a coordenada y do ponto está acima ou abaixo da reta
-
-# Classe para criar o dataset
-class Dataset:
-    def __init__(self, N): 
-        self.N = N # tamanho do dataset
-
-    # Método para gerar a base de dados D
-    def generate_dataset(self, target):
-        N = self.N
-        data = np.random.uniform(-1, 1, (N, 2)) # gera N pontos no R2 com coordenadas entre [-1, 1]
-        labels = np.array([target.classify_point(point) for point in data])
-        return data, labels
-
-# Classe para criar e treinar o perceptron 2D
-class Perceptron2D:
-    def __init__(self, weights = np.zeros(3)):
-        self.w = weights # inicializa os pesos (incluindo o w_0)
-    
-    # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
-    def pla(self, data, labels): 
+    # Método para calcular a matriz X
+    def calc_matriz_X(self, data):
         n_samples = len(data)
-        X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
-        iterations = 0
-        errors = 1
-        while errors > 0:
-            errors = 0
-            for i in range(n_samples):
-                if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
-                    self.w += labels[i] * X_bias[i] # atualiza os pesos
-                    errors += 1
-            iterations += 1
-        return iterations, self.w
+        X = np.hstack([np.ones((n_samples, 1)), data]) # adiciona coluna de 1s
+        return X
     
-    # Método para classificar um dataset com base nos pesos aprendidos.
+    # Método para treinar o classificador linear
+    def fit(self, data, labels):
+        X = self.calc_matriz_X(data)
+        y = labels
+        X_T = np.transpose(X)
+        X_pseudo_inv = np.dot(np.linalg.inv(np.dot(X_T, X)), X_T)
+        self.w = np.dot(X_pseudo_inv, y)
+        return self.w
+    
     def classificar(self, data):
-        n_samples = len(data)
-        X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o bias X_0
-        return np.sign(np.dot(X_bias, self.w)) # verifica o sinal do produto escalar entre x e w
-
-
-        Agora verifique se o item abaixo pode ser respondido pela função depois dele
-
-        \item Considere $N = 10$. Quantas iterações demora, em média, para que o PLA convirja com $N = 10$
-        pontos de treinamento? Escolha o valor mais próximo do seu resultado.
+        X = self.calc_matriz_X(data)
+        w_T = np.transpose(self.w)
+        y_predicted = np.array([np.sign(np.dot(w_T, xn)) for xn in X])
+        return y_predicted
     
-        \begin{enumerate}
-            \item[\textcolor{red}{(a)}]\textcolor{red}{1}\addtocounter{enumii}{1}
-            \item 15 *
-            \item 300
-            \item 5000
-            \item 10000
-        \end{enumerate}
+# Método para treinar o perceptron usando o algoritmo Pocket
+def pocket(self, data, labels, max_iter = 1000): 
+    n_samples = len(data)
+    X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
+    iterations = 0
+    E_in = 1
+    w = self.w
+    while E_in > 0 and iterations < max_iter:
+        E_in_atual = 0
+        w_atual = w
+        errors = 0
+        for i in range(n_samples):
+            if labels[i] * np.dot(self.w, X_bias[i]) <= 0:
+                w_atual += labels[i] * X_bias[i] # atualiza os pesos
+                errors += 1
+        iterations += 1
+        E_in_atual = errors/n_samples
+        if E_in_atual < E_in: # atualiza os pesos e o E_in apenas se o E_in for menor que o anterior
+            E_in = E_in_atual
+            w = w_atual
+    self.w = w
+    return iterations, self.w, E_in
+setattr(Perceptron2D, "pocket", pocket)
+    
+def teste():
+    # Criar a função target
+    target = Target()
+    a, b = target.generate_random_line()
+    # Criar o dataset e a função target
+    num_points = 100
+    dataset = Dataset(num_points)
+    data, labels = dataset.generate_dataset(target)
+    # Criar e treinar o classificador linear
+    linear = Linear()
+    w = linear.fit(data,labels)
+    # Plotar resultados
+    scatterplot(data, labels, target, linear)
 
-        def calc_num_iter(num_points, verbose = True):
-            lista_iter = list()
-            for _ in range(1000):
-                target = Target()
-                target.generate_random_line()
-                dataset = Dataset(num_points)
-                data, labels = dataset.generate_dataset(target)
-                perceptron = Perceptron2D()
-                iter, _ = perceptron.pla(data,labels)
-                lista_iter.append(iter)
-            if verbose: print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
-            return lista_iter
+def calc_E_in(num_points, verbose = True):
+    lista_E_in = list()
+    lista_target = list()
+    lista_linear = list()
+    for _ in range(1000):
+        # Criar a função target
+        target = Target()
+        a, b = target.generate_random_line()
+        # Criar o dataset
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Criar e treinar o classificador linear
+        linear = Linear()
+        w = linear.fit(data,labels)
+        # Classificar os pontos
+        y_predicted = linear.classificar(data)
+        # Calcular E_in para essa execução
+        lista_E_in.append(np.mean(labels != y_predicted))
+        # Guardar para saida
+        lista_target.append(target)
+        lista_linear.append(linear)
+    E_in = np.mean(lista_E_in)
+    if verbose: print(f"E_in = {E_in:.4f}")
+    return E_in, lista_target, lista_linear
+
+def calc_E_out(num_points, lista_target, lista_linear, verbose = True):
+    lista_E_out = list()
+    for target, linear in zip(lista_target, lista_linear):
+        # Criar o dataset com a mesma função target do E_in
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Classificar os pontos com a mesma hipotese do E_in
+        y_predicted = linear.classificar(data)
+        # Calcular E_out para essa execução
+        lista_E_out.append(np.mean(labels != y_predicted))
+    E_out = np.mean(lista_E_out)
+    if verbose: print(f"E_out = {E_out:.4f}")
+    return E_out
+
+def calc_PLA_iter(num_points):
+    lista_iter = list()
+    for _ in range(1000):
+        # Criar a função target
+        target = Target()
+        target.generate_random_line()
+        # Criar o dataset
+        dataset = Dataset(num_points)
+        data, labels = dataset.generate_dataset(target)
+        # Criar e treinar o classificador linear
+        linear = Linear()
+        w = linear.fit(data,labels)
+        # Criar e treinar o perceptron
+        perceptron = Perceptron2D(weights=w)
+        iter, _ = perceptron.pla(data,labels)
+        lista_iter.append(iter)
+    print(f"{np.mean(lista_iter)} iterações com desvio padrão {np.std(lista_iter):.4f} (min:{np.min(lista_iter)}, máx:{np.max(lista_iter)})")
+
+def calc_pocket_E(N1, N2, i, LinReg = False):
+    lista_E_in = list()
+    lista_E_out = list()
+    for _ in range(1000):
+        # Criar a função target
+        target = Target()
+        a, b = target.generate_random_line()
+        # Criar o dataset de treinamento
+        dataset_train = Dataset(N1)
+        x_train, y_train = dataset_train.generate_dataset(target)
+        selected_indices = np.random.choice(len(y_train), int(len(y_train) * 0.1), replace=False) # seleciona 10%
+        y_train[selected_indices] *= -1 # inverte o valor de 10%
+        if LinReg: # pesos inicializados com regressão linear
+            # Criar e treinar o classificador linear
+            linear = Linear()
+            w = linear.fit(x_train,y_train)
+            # Criar e treinar o perceptron com pocket
+            perceptron = Perceptron2D(weights=w)
+            _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
+            lista_E_in.append(E_in)
+        else: # pesos inicializados com 0
+            # Criar e treinar o perceptron com pocket
+            perceptron = Perceptron2D()
+            _, _, E_in = perceptron.pocket(x_train,y_train, max_iter = i)
+            lista_E_in.append(E_in)
+        # Criar o dataset de teste
+        dataset_test = Dataset(N2)
+        x_test, y_test = dataset_test.generate_dataset(target)
+        # Classificar os pontos com a mesma hipotese do E_in
+        y_predicted = perceptron.classificar(x_test)
+        # Calcular E_out para essa execução
+        E_out = np.mean(y_test != y_predicted)
+        lista_E_out.append(E_out)
+    # Printar E_in e E_out médios
+    print(f"E_in = {np.mean(E_in):.4f}")
+    print(f"E_out = {np.mean(E_out):.4f}")
+    # Plotar o dataset, a função target e a hipótese g da última execução
+    scatterplot(x_train, y_train, target, perceptron)
+
+    
+if __name__ == "__main__":
+    teste()
+    _, target, linear = calc_E_in(num_points=100)
+    calc_E_out(num_points=1000, lista_target=target, lista_linear=linear)
+    calc_PLA_iter(num_points=10)
+    calc_pocket_E(N1 = 100, N2 = 1000, i = 50, LinReg = True)
 
 

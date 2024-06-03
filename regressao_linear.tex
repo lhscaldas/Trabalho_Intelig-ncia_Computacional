@@ -240,7 +240,7 @@ newline \par
         \textbf{Resposta:} $E_{in} = 0.2200$ e $E_{out} = 0.2540$.
 
         \begin{figure}[H]
-            \caption{Scatterplot inicializando os pesos com 0 e $i = 10$}
+            \caption{Base de dados de treinamento inicializando os pesos com 0 e $i = 10$}
                \centering
                \includegraphics[width=12cm]{pocket_i10_w0.png}
         \end{figure}
@@ -250,7 +250,7 @@ newline \par
         \textbf{Resposta:} $E_{in} = 0.2400$ e $E_{out} = 0.0350$.
 
         \begin{figure}[H]
-            \caption{Scatterplot inicializando os pesos com 0 e $i = 50$}
+            \caption{Base de dados de treinamento inicializando os pesos com 0 e $i = 50$}
                \centering
                \includegraphics[width=12cm]{pocket_i50_w0.png}
         \end{figure}
@@ -260,7 +260,7 @@ newline \par
         \textbf{Resposta:} $E_{in} = 0.2200$ e $E_{out} = 0.01400$.
 
         \begin{figure}[H]
-            \caption{Scatterplot inicializando os pesos com Regressão Linear e $i = 10$}
+            \caption{Base de dados de treinamento inicializando os pesos com Regressão Linear e $i = 10$}
                \centering
                \includegraphics[width=12cm]{pocket_i10_reglin.png}
         \end{figure}
@@ -270,10 +270,12 @@ newline \par
         \textbf{Resposta:} $E_{in} = 0.1800$ e $E_{out} = 0.0880$.
 
         \begin{figure}[H]
-            \caption{Scatterplot inicializando os pesos com Regressão Linear e $i = 50$}
+            \caption{Base de dados de treinamento inicializando os pesos com Regressão Linear e $i = 50$}
                \centering
                \includegraphics[width=12cm]{pocket_i50_reglin.png}
         \end{figure}
+
+        \textbf{Comentários sobre os 4 subitens:} Para todos os subitens o $E_{out}$ foi menor do que o $E_{in}$, o que normalmente não ocorre, porém neste experimento se Justifica pelo fato do dataset de treinamento (dentro da amostra) ter sofrido inversões de labels e o dataset de teste (fora da amostra) não. 
 
     \end{enumerate}
 
