@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# START_TARGET
 # Classe para criar a função target
 class Target:
     def __init__(self): 
@@ -16,6 +17,7 @@ class Target:
         self.a = a
         self.b = b
         return a, b
+# END_TARGET
     
     # Método para classificar pontos de acordo a função target
     def classify_point(self, point):
@@ -41,7 +43,7 @@ class Perceptron2D:
     def __init__(self, weights = np.zeros(3)):
         self.w = weights # inicializa os pesos (incluindo o w_0)
     
-    # Método para treinar o perceptron usando o algoritmo de aprendizagem perceptron (PLA)
+    # Método para treinar o perceptron usando o PLA
     def pla(self, data, labels): 
         n_samples = len(data)
         X_bias = np.hstack([np.ones((n_samples, 1)), data]) # adiciona uma coluna de 1s para o X_0 (coordenada artificial)
@@ -162,11 +164,11 @@ def plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio):
 
 if __name__ == "__main__":
     # teste()
-    calc_num_iter(num_points = 100)
-    # calc_p_erro(num_points = 10)
-    # num_points_list = np.arange(10, 101, 50, dtype=int)
-    # lista_iter_medio, lista_erro_medio = relationship(num_points_list)
-    # plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio)
+    # calc_num_iter(num_points = 100)
+    # calc_p_erro(num_points = 100)
+    num_points_list = np.arange(10, 101, 2, dtype=int)
+    lista_iter_medio, lista_erro_medio = relationship(num_points_list)
+    plot_relationship(num_points_list, lista_iter_medio, lista_erro_medio)
 
 
     
